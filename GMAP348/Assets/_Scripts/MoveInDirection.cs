@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,8 +9,10 @@ public class MoveInDirection : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		/*
 		transform.Translate(direction.x * speed * Time.deltaTime,
 			direction.y * speed * Time.deltaTime,
 			direction.z * speed * Time.deltaTime);
+			*/
 	}
 }
