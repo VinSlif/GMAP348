@@ -11,6 +11,8 @@ public class Pedestrians : MonoBehaviour {
 	private float timeStart;
 	private float currTime;
 	private float duration = 0f;
+	private float fullDuration = 10f;
+	private float partDuration = 2f;
 	private float percentageDone;
 	private float currWalkPos;
 
@@ -19,14 +21,14 @@ public class Pedestrians : MonoBehaviour {
 	private bool honked = false;
 	private bool angry = false;
 
-	private float randomCrossTime;
+	private bool crossingBool = false;
 
 
 	// Use this for initialization
+
 	void Start () {
 		ped_transform = this.gameObject.transform;
-		ped_transform.position = new Vector3 (ped_transform.position.x, 0, ped_transform.position.z);
-		randomCrossTime = Random.Range (1f, 5f);
+		ped_transform.position = new Vector3 (ped_transform.position.x, -3f, ped_transform.position.z);
 	}
 	
 	// Update is called once per frame
@@ -41,15 +43,17 @@ public class Pedestrians : MonoBehaviour {
 			peopleObj.transform.localPosition = new Vector3( 0, 0, 0);
 		}
 
-		if (percentageDone >= 1f) {
+		if (percentageDone >= 1f && crossingBool) {
 			FinishedCrossing();
+			crossingBool = false;
 		}
 	}
 
 	void OnTriggerEnter (Collider col) {
 		if (col.gameObject.tag == "Player") {
+			Debug.Log("Karma: " + karmaCount);
 			if (karmaCount == 3) {
-				duration = 4f;
+				duration = partDuration;
 			}
 			carEnterTime = Time.time;
 			carStayTime = Time.time;
@@ -65,12 +69,13 @@ public class Pedestrians : MonoBehaviour {
 					karmaCount = -3;
 					angry = true;
 				} else if (karmaCount > -3){
-					duration = 4f;
+					duration = partDuration;
 				}
 			} else {
+				carStayTime += Time.deltaTime;
 				if ((carStayTime - carEnterTime) >= 3f) {
 					karmaCount++;
-					duration = 4f;
+					duration = partDuration;
 					if (karmaCount > 3) {
 						karmaCount = 3;
 					}
@@ -80,27 +85,28 @@ public class Pedestrians : MonoBehaviour {
 	}
 
 	void OnTriggerExit (Collider col) {
+		Debug.Log("Karma: " + karmaCount);
 		if (col.gameObject.tag == "Player" && angry) {
 			angry = false;
-			duration = 8f;
-			timeStart = Time.time - 4f;
+			duration = fullDuration;
+			timeStart = Time.time - (fullDuration/2);
 			currTime = Time.time;
 		}
 	}
 
-	private void Crossing (float crossTime) {
-		if (crossTime >= randomCrossTime){
-			ped_transform.position = new Vector3 (ped_transform.position.x, 0, ped_transform.position.z);
-			peopleObj.transform.localPosition = new Vector3( 0, 0, -3f);
-			timeStart = Time.time;
-			currTime = Time.time;
-			honked = false;
-			duration = 8f;
-			angry = false;
-		}
+	public void Crossing () {
+		crossingBool = true;
+		ped_transform.position = new Vector3 (ped_transform.position.x, 0, ped_transform.position.z);
+		peopleObj.transform.localPosition = new Vector3( 0, 0, -3f);
+		timeStart = Time.time;
+		currTime = Time.time;
+		honked = false;
+		duration = fullDuration;
+		angry = false;
 	}
 
 	private void FinishedCrossing () {
-		ped_transform.position = new Vector3 (ped_transform.position.x, 0, ped_transform.position.z);
+		Debug.Log ("called Finished");
+		ped_transform.position = new Vector3 (ped_transform.position.x, -3f, ped_transform.position.z);
 	}
 }

@@ -37,6 +37,7 @@ public class Project1GameManager : MonoBehaviour {
 		if (!isDelivering) {
 			ClearDeliverPoints();
 			if (!isPickUpSpawned) {
+				SetPedestrians(pedSpawn);
 				Instantiate(pickUpPrefab, delPickPoint.position, delPickPoint.localRotation);
 				isDeliverPicked = false;
 				isPickUpSpawned = true;
@@ -49,13 +50,17 @@ public class Project1GameManager : MonoBehaviour {
 				isPickUpSpawned = false;
 			}
 		}
+
+		if (Input.GetKeyDown (KeyCode.F1)) {
+			pedestrian[1].GetComponent<Pedestrians>().Crossing();
+		}
 	}
 
 	void SpawnPedestrians(int needed) {
 		pedestrian = new GameObject[needed];
 		for (int i=0; i < needed; i++) {
 			pedestrian[i] = Instantiate(pedPrefab, pedLoc[i].position, pedLoc[i].localRotation);
-			pedestrian[i].SetActive(false);
+			//pedestrian[i].SetActive(false);
 			pedestrian[i].transform.parent = pedHolder.transform;
 		}
 	}
@@ -74,7 +79,7 @@ public class Project1GameManager : MonoBehaviour {
 
 	void SetPedestrians(int needed) {
 		for (int i=0; i < needed; i++) {
-			pedestrian[Random.Range(0, pedLoc.Length+1)].SetActive(true);
+			pedestrian[Random.Range(0, pedLoc.Length+1)].GetComponent<Pedestrians>().Crossing();
 		}
 	}
 }
