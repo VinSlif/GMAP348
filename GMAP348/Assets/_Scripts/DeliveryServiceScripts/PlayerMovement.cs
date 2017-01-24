@@ -42,6 +42,7 @@ public class PlayerMovement : MonoBehaviour {
 			} else {
 				transform_player.rotation = Quaternion.Euler(0, -90f, 0);
 			}
+
 		} else if (verticalMove > 0) {
 			transform_player.rotation = Quaternion.Euler(0, 0, 0);
 		} else if (verticalMove < 0) {

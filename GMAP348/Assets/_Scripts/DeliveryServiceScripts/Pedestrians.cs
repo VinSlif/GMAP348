@@ -25,7 +25,7 @@ public class Pedestrians : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		ped_transform = this.gameObject.transform;
-		ped_transform.position = new Vector3 (ped_transform.position.x, -3, ped_transform.position.z);
+		ped_transform.position = new Vector3 (ped_transform.position.x, 0, ped_transform.position.z);
 		randomCrossTime = Random.Range (1f, 5f);
 	}
 	
@@ -77,12 +77,6 @@ public class Pedestrians : MonoBehaviour {
 				}
 			}
 		} 
-
-		if (col.gameObject.tag == "DeliveryPoint") {
-			Crossing(col.gameObject.GetComponent<PseudoDeliveryPoint>().deliveryPointTime);
-			Debug.Log ("Called");
-		}
-		Debug.Log ("Called");
 	}
 
 	void OnTriggerExit (Collider col) {
@@ -107,6 +101,6 @@ public class Pedestrians : MonoBehaviour {
 	}
 
 	private void FinishedCrossing () {
-		ped_transform.position = new Vector3 (ped_transform.position.x, -3, ped_transform.position.z);
+		ped_transform.position = new Vector3 (ped_transform.position.x, 0, ped_transform.position.z);
 	}
 }
