@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ public class Project1GameManager : MonoBehaviour {
 	void Start () {
 		delLoc = GameObject.FindGameObjectsWithTag("DeliveryPoint");
 
-		GameObject[] pedLocObject = GameObject.FindGameObjectsWithTag("PedestrianPoint");
+		GameObject[] pedLocObject = GameObject.FindGameObjectsWithTag("PedestrianPoint").OrderBy( go => go.name ).ToArray();
 		pedLoc = new Transform[pedLocObject.Length];
 		for (int i=0; i < pedLocObject.Length; i++) {
 			pedLoc[i] = pedLocObject[i].transform;
@@ -51,8 +52,11 @@ public class Project1GameManager : MonoBehaviour {
 			}
 		}
 
+		// Debug
 		if (Input.GetKeyDown (KeyCode.F1)) {
-			pedestrian[1].GetComponent<Pedestrians>().Crossing();
+			for (int i = 0; i < 40; i++) {
+				pedestrian[i].GetComponent<Pedestrians>().Crossing(i);
+			}
 		}
 	}
 
@@ -61,6 +65,7 @@ public class Project1GameManager : MonoBehaviour {
 		for (int i=0; i < needed; i++) {
 			pedestrian[i] = Instantiate(pedPrefab, pedLoc[i].position, pedLoc[i].localRotation);
 			//pedestrian[i].SetActive(false);
+			pedestrian[i].name = "pedestrian " + i + " (clone)";
 			pedestrian[i].transform.parent = pedHolder.transform;
 		}
 	}
@@ -73,13 +78,28 @@ public class Project1GameManager : MonoBehaviour {
 
 	void PickDeliveryPoints(int needed) {
 		for (int i=0; i < needed + 1; i++) {
-			delLoc[Random.Range(0, delLoc.Length+1)].SetActive(true);
+			delLoc[Random.Range(0, delLoc.Length)].SetActive(true);
 		}
 	}
 
 	void SetPedestrians(int needed) {
 		for (int i=0; i < needed; i++) {
-			pedestrian[Random.Range(0, pedLoc.Length+1)].GetComponent<Pedestrians>().Crossing();
+			int randomPedestrian;
+			do {
+				randomPedestrian = Random.Range (0, pedLoc.Length + 1);
+			} while (pedestrian [randomPedestrian].GetComponent<Pedestrians> ().crossingBool);
+			pedestrian[randomPedestrian].GetComponent<Pedestrians>().Crossing(randomPedestrian);
 		}
+	}
+
+	public void ChangePedLocation (int pedIndex) {
+		int newIndex = 0;
+		do {
+			newIndex = Random.Range (0, pedestrian.Length);
+		} while (newIndex == pedIndex && pedestrian [newIndex].GetComponent<Pedestrians> ().crossingBool);
+
+		int temp = pedestrian [pedIndex].GetComponent<Pedestrians> ().karmaCount;
+		pedestrian [pedIndex].GetComponent<Pedestrians> ().karmaCount = pedestrian [newIndex].GetComponent<Pedestrians> ().karmaCount;
+		pedestrian [newIndex].GetComponent<Pedestrians> ().karmaCount = temp;
 	}
 }
