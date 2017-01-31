@@ -13,7 +13,6 @@ public class RoadBlockBehavior : MonoBehaviour {
 	void Start() {
 		gameManager = GameObject.FindGameObjectWithTag("ManagerTag").GetComponent<Project1GameManager>();
 		deliverStart = Project1GameManager.delivered;
-		transform.parent = null;
 	}
 
 	void Update() {

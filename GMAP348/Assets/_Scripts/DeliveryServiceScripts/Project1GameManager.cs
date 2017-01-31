@@ -29,6 +29,7 @@ public class Project1GameManager : MonoBehaviour {
 	public GameObject pedPrefab;
 	private GameObject[] pedestrian;
 	private bool[] pedBlocked;
+	private bool[] pedBlockedSpawned;
 
 	public GameObject streetBlockHolder;
 	public GameObject streetBlock;
@@ -54,7 +55,10 @@ public class Project1GameManager : MonoBehaviour {
 
 		pedBlocked = new bool[pedLoc.Length];
 		GetBlockedStreets();
-
+		pedBlockedSpawned = new bool[pedLoc.Length];
+		for (int i = 0; i < pedBlocked.Length; i++) {
+			pedBlockedSpawned[i] = false;
+		}
 		ClearDeliverPoints();
 
 		deliveryTimer = deliveryTime;
@@ -71,6 +75,7 @@ public class Project1GameManager : MonoBehaviour {
 				ClearDeliverPoints();
 				if (!isPickUpSpawned) {
 					GetBlockedStreets();
+					GetSpawnedBlockedStreets();
 					SetPedestrians(pedSpawn);
 					Instantiate(pickUpPrefab, delPickPoint.position, delPickPoint.localRotation);
 					isDeliverPicked = false;
@@ -80,6 +85,7 @@ public class Project1GameManager : MonoBehaviour {
 				if (!isDeliverPicked) {
 					PickDeliveryPoints((int)Random.Range(1, delivered + 2));
 					GetBlockedStreets();
+					GetSpawnedBlockedStreets();
 					SetPedestrians(pedSpawn);
 					isDeliverPicked = true;
 					isPickUpSpawned = false;
@@ -173,8 +179,12 @@ public class Project1GameManager : MonoBehaviour {
 	}
 
 	void BlockStreet(int index) {
-		GameObject roadBlock = Instantiate(streetBlock, pedLoc[index].position, pedLoc[index].rotation);
-		roadBlock.name = "RoadBlock" + index;
+		if (!pedBlockedSpawned[index]) {
+			GameObject roadBlock = Instantiate(streetBlock, pedLoc[index].position, pedLoc[index].rotation);
+			roadBlock.GetComponent<RoadBlockBehavior>().index = index;
+			roadBlock.name = "RoadBlock " + index;
+			roadBlock.transform.parent = streetBlockHolder.transform;
+		}
 	}
 
 	void GetBlockedStreets() {
@@ -186,6 +196,18 @@ public class Project1GameManager : MonoBehaviour {
 	void SetBlockedStreets() {
 		for (int i = 0; i < pedLoc.Length; i++) {
 			pedestrian[i].GetComponent<Pedestrians>().wasHit = pedBlocked[i];
+		}
+	}
+
+	void GetSpawnedBlockedStreets() {
+		if (streetBlockHolder.transform.childCount > 0) {
+			int children = streetBlockHolder.transform.childCount;
+			for (int i = 0; i < children; i++) {
+				if (transform.GetChild(i).GetComponent<RoadBlockBehavior>() != null) {
+					int index = transform.GetChild(i).GetComponent<RoadBlockBehavior>().index;
+					pedBlockedSpawned[index] = true;
+				}
+			}
 		}
 	}
 
