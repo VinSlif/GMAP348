@@ -22,7 +22,8 @@ public class Pedestrians : MonoBehaviour {
 	private float currTime;
 	private float duration = 0f;
 	private float fullDuration = 10f;
-	private float partDuration = 2f;
+	private float pedSpeed = 1f;
+	private float pedFast  = 5f;
 	private float percentageDone;
 	private float currWalkPos;
 
@@ -32,6 +33,7 @@ public class Pedestrians : MonoBehaviour {
 	private float carEnterTime;
 	private float carStayTime;
 	private bool honked = false;
+	private bool stayed = false;
 	private bool angry = false;
 
 	public bool crossingBool = false;
@@ -66,7 +68,7 @@ public class Pedestrians : MonoBehaviour {
 
 			ragdollTimer = ragdollTime;
 
-			currTime += Time.deltaTime;
+			currTime += Time.deltaTime * pedSpeed;
 			percentageDone = (currTime - timeStart) / duration;
 			currWalkPos = Mathf.Lerp(-3f, 3f, percentageDone);
 
@@ -100,7 +102,8 @@ public class Pedestrians : MonoBehaviour {
 	void OnTriggerEnter(Collider col) {
 		if (col.gameObject.tag == "Player") {
 			if (karmaCount == HIGHKARMA) {
-				duration = partDuration;
+				//duration = partDuration;
+				pedSpeed = pedFast;
 			}
 			carEnterTime = Time.time;
 			carStayTime = Time.time;
@@ -116,14 +119,17 @@ public class Pedestrians : MonoBehaviour {
 					karmaCount = LOWKARMA;
 					angry = true;
 				} else if (karmaCount > LOWKARMA) {
-					duration = partDuration;
+					//duration = partDuration;
+					pedSpeed = pedFast;
 				}
 				karmaDis.sprite = karmaSprites[karmaCount + 2];
 			} else {
 				carStayTime += Time.deltaTime;
-				if ((carStayTime - carEnterTime) >= 3f) {
+				if ((carStayTime - carEnterTime) >= 3f && !stayed) {
 					karmaCount++;
-					duration = partDuration;
+					stayed = true;
+					//duration = partDuration;
+					pedSpeed = pedFast;
 					if (karmaCount > HIGHKARMA) {
 						karmaCount = HIGHKARMA;
 					}
@@ -150,6 +156,7 @@ public class Pedestrians : MonoBehaviour {
 		timeStart = Time.time;
 		currTime = Time.time;
 		honked = false;
+		stayed = false;
 		duration = fullDuration;
 		angry = false;
 	}

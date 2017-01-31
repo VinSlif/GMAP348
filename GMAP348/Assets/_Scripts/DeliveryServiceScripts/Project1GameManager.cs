@@ -92,7 +92,8 @@ public class Project1GameManager : MonoBehaviour {
 			gameOverUI.SetActive(true);
 
 			if (Input.GetKey(KeyCode.Space)) {
-				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+				//SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+				Application.Quit();
 			}
 		}
 

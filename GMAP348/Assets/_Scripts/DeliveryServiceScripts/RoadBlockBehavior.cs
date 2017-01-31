@@ -19,7 +19,7 @@ public class RoadBlockBehavior : MonoBehaviour {
 	void Update() {
 		if (Project1GameManager.delivered > deliverStart + deliverNum) {
 			gameManager.CommunicateHitBool(index, false);
-			Destroy(gameObject);
+			Destroy(this.gameObject);
 		}
 	}
 }
