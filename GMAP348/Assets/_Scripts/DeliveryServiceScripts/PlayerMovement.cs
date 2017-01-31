@@ -12,20 +12,20 @@ public class PlayerMovement : MonoBehaviour {
 	private float verticalMove;
 	private float horizontalMove;
 
-	void Start () {
+	void Start() {
 		rb_player = GetComponent<Rigidbody>();
 		transform_player = this.gameObject.transform;
 	}
-	
-	void Update () {
+
+	void Update() {
 
 		verticalMove = 0f;
 		horizontalMove = 0f;
 
-		verticalMove = Input.GetAxis ("Vertical");
-		horizontalMove = Input.GetAxis ("Horizontal");
+		verticalMove = Input.GetAxis("Vertical");
+		horizontalMove = Input.GetAxis("Horizontal");
 
-		rb_player.velocity = new Vector3 (horizontalMove * speed, 0, verticalMove * speed);
+		rb_player.velocity = new Vector3(horizontalMove * speed, 0, verticalMove * speed);
 		if (horizontalMove > 0) {
 			if (verticalMove > 0) {
 				transform_player.rotation = Quaternion.Euler(0, 45f, 0);
