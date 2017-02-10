@@ -37,3 +37,5 @@
 /Users/Vin/Desktop/Unity Projects/GMAP348/Temp/bin/Debug/Mono.Cecil.Mdb.dll
 /Users/Vin/Desktop/Unity Projects/GMAP348/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.dll
 /Users/Vin/Desktop/Unity Projects/GMAP348/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.xml
+/Users/Vin/Desktop/Unity Projects/GMAP348/Temp/bin/Debug/UnityEngine.Advertisements.dll
+/Users/Vin/Desktop/Unity Projects/GMAP348/Temp/bin/Debug/UnityEngine.Purchasing.dll

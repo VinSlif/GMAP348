@@ -47,8 +47,12 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\_Scripts\BackAndForth.cs" />
+     <Compile Include="Assets\_Scripts\DeliveryServiceScripts\BlockBehavior.cs" />
+     <Compile Include="Assets\_Scripts\DeliveryServiceScripts\CarBehavior.cs" />
+     <Compile Include="Assets\_Scripts\DeliveryServiceScripts\CrossWalkBehavior.cs" />
      <Compile Include="Assets\_Scripts\DeliveryServiceScripts\LookAtMainCamera.cs" />
-     <Compile Include="Assets\_Scripts\DeliveryServiceScripts\PedestrianBehavior.cs" />
+     <Compile Include="Assets\_Scripts\DeliveryServiceScripts\PedestrianFollowerBehavior.cs" />
+     <Compile Include="Assets\_Scripts\DeliveryServiceScripts\PedestrianLeaderBehavior.cs" />
      <Compile Include="Assets\_Scripts\DeliveryServiceScripts\Pedestrians.cs" />
      <Compile Include="Assets\_Scripts\DeliveryServiceScripts\PickUpBehavior.cs" />
      <Compile Include="Assets\_Scripts\DeliveryServiceScripts\PlayerMovement.cs" />

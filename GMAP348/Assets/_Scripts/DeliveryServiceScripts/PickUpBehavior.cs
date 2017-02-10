@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class PickUpBehavior : MonoBehaviour {
 
+	public int index;
 
+	void Start() {
+	}
+
+	/*
 	void OnTriggerEnter(Collider col) {
 		if (col.gameObject.tag == "Player") {
 			if (!Project1GameManager.isDelivering) {
@@ -19,4 +24,5 @@ public class PickUpBehavior : MonoBehaviour {
 			Destroy(gameObject);
 		}
 	}
+	*/
 }

@@ -21,3 +21,5 @@
 /Users/Vin/Desktop/Unity Projects/GMAP348/Temp/bin/Debug/Unity.CecilTools.dll
 /Users/Vin/Desktop/Unity Projects/GMAP348/Temp/bin/Debug/Mono.Cecil.Pdb.dll
 /Users/Vin/Desktop/Unity Projects/GMAP348/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/Vin/Desktop/Unity Projects/GMAP348/Temp/bin/Debug/UnityEngine.Advertisements.dll
+/Users/Vin/Desktop/Unity Projects/GMAP348/Temp/bin/Debug/UnityEngine.Purchasing.dll
