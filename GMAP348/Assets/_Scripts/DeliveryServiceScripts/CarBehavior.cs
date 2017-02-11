@@ -19,7 +19,9 @@ public class CarBehavior : MonoBehaviour {
 	[HideInInspector]
 	public int index;
 
+	public ParticleSystem bloodPrefab;
 	public bool didCrime = false;
+	public Color color;
 
 	private Project2GameManager gameManager;
 	private State currState = State.Start;
@@ -35,6 +37,8 @@ public class CarBehavior : MonoBehaviour {
 		gameManager = GameObject.FindGameObjectWithTag("ManagerTag").GetComponent<Project2GameManager>();
 
 		agent = GetComponent<NavMeshAgent>();
+
+		AllChangeColor (color);
 	}
 
 	// Update is called once per frame
@@ -91,8 +95,23 @@ public class CarBehavior : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision col) {
+		// will throw an error before start gets called
 		if (col.gameObject.tag == gameManager.ped.tag) {
 			didCrime = true;
+
+			for (int i = 0; i < col.contacts.Length; i++) {
+				ParticleSystem blood = Instantiate (bloodPrefab, col.contacts [i].point, Quaternion.identity);
+				blood.transform.parent = transform;
+			}
+
+			Physics.IgnoreCollision(col.gameObject.GetComponent<Collider>(), this.GetComponent<Collider>());
+		}
+	}
+
+	void AllChangeColor(Color color) {
+		MeshRenderer[] all = transform.GetComponentsInChildren<MeshRenderer>();
+		foreach(MeshRenderer rend in all) {
+			rend.material.color = color;
 		}
 	}
 }

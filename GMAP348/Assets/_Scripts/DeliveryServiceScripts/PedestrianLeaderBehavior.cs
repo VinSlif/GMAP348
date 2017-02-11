@@ -10,7 +10,6 @@ public class PedestrianLeaderBehavior : MonoBehaviour {
 	public enum State {
 		Start,
 		Travelling,
-		Waiting,
 		ReachedGoal
 	}
 
@@ -46,6 +45,7 @@ public class PedestrianLeaderBehavior : MonoBehaviour {
 	}
 
 	public int index;
+	public float checkDistance = 4.0f;
 	public Color color;
 
 	public Followers followers = new Followers();
@@ -53,6 +53,7 @@ public class PedestrianLeaderBehavior : MonoBehaviour {
 	private Project2GameManager gameManager;
 	private State currState = State.Start;
 	private NavMeshAgent agent;
+	private Vector3 finalDestination;
 
 	// Use this for initialization
 	void Start() {
@@ -68,13 +69,15 @@ public class PedestrianLeaderBehavior : MonoBehaviour {
 	void Update() {
 
 		if (currState == State.Start) {
-			agent.destination = gameManager.ped.SelectPoint();
+			finalDestination = gameManager.ped.SelectPoint ();
+			agent.destination = finalDestination;
 
 			currState = State.Travelling;
 
 		} else if (currState == State.Travelling) {
-
-		} else if (currState == State.Waiting) {
+			if (Vector3.Distance (transform.position, finalDestination) < checkDistance) {
+				currState = State.ReachedGoal;
+			}
 
 		} else if (currState == State.ReachedGoal) {
 

@@ -1,7 +1,6 @@
 C:\Users\tjs335\Documents\GMAP348\GMAP348\Temp\bin\Debug\Assembly-CSharp-Editor-firstpass.dll
 C:\Users\tjs335\Documents\GMAP348\GMAP348\Temp\bin\Debug\Assembly-CSharp-Editor-firstpass.pdb
 C:\Users\tjs335\Documents\GMAP348\GMAP348\Temp\bin\Debug\nunit.framework.dll
-C:\Users\tjs335\Documents\GMAP348\GMAP348\Temp\bin\Debug\SyntaxTree.VisualStudio.Unity.Bridge.dll
 C:\Users\tjs335\Documents\GMAP348\GMAP348\Temp\bin\Debug\UnityEditor.Advertisements.dll
 C:\Users\tjs335\Documents\GMAP348\GMAP348\Temp\bin\Debug\UnityEditor.Analytics.dll
 C:\Users\tjs335\Documents\GMAP348\GMAP348\Temp\bin\Debug\UnityEditor.Android.Extensions.dll
@@ -33,8 +32,6 @@ C:\Users\tjs335\Documents\GMAP348\GMAP348\Temp\bin\Debug\Unity.DataContract.dll
 C:\Users\tjs335\Documents\GMAP348\GMAP348\Temp\bin\Debug\ICSharpCode.NRefactory.dll
 C:\Users\tjs335\Documents\GMAP348\GMAP348\Temp\bin\Debug\Unity.UNetWeaver.dll
 C:\Users\tjs335\Documents\GMAP348\GMAP348\Temp\bin\Debug\Mono.Cecil.Mdb.dll
-C:\Users\tjs335\Documents\GMAP348\GMAP348\Temp\bin\Debug\SyntaxTree.VisualStudio.Unity.Messaging.dll
-C:\Users\tjs335\Documents\GMAP348\GMAP348\Temp\bin\Debug\SyntaxTree.Mono.Cecil.dll
 C:\Users\tjs335\Documents\GMAP348\GMAP348\Temp\bin\Debug\Unity.CecilTools.dll
 C:\Users\tjs335\Documents\GMAP348\GMAP348\Temp\bin\Debug\Mono.Cecil.Pdb.dll
 C:\Users\tjs335\Documents\GMAP348\GMAP348\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb

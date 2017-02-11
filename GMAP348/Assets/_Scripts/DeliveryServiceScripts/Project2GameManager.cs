@@ -24,14 +24,18 @@ public class Project2GameManager : MonoBehaviour {
 		[HideInInspector]
 		public List<GameObject> cars;
 
-		public void Spawn(int needed, Transform[] pos) {
+		public void Spawn(int needed) { // add in GameObject[] pos
 			for (int i = 0; i < needed; i++) {
 				cars.Add(Instantiate(prefab,
 					Vector3.zero,
-					//pos[Random].transform.position,
+					//pos[UE.Random.Range].transform.position,
 					Quaternion.identity));
 				cars[i].name = "car " + i + " (clone)";
 				cars[i].GetComponent<CarBehavior>().index = i;
+				cars [i].GetComponent<CarBehavior> ().color = new Color(((int)UnityEngine.Random.Range(0, 256)) / 255.0f,
+					((int)UnityEngine.Random.Range(0, 256)) / 255.0f,
+					((int)UnityEngine.Random.Range(0, 256)) / 255.0f,
+					1);
 				cars[i].transform.parent = holder.transform;
 			}
 		}
@@ -183,9 +187,9 @@ public class Project2GameManager : MonoBehaviour {
 		public string pointTag = "CrossWalkPoint";
 
 		[HideInInspector]
-		public Transform[] loc;
-		[HideInInspector]
 		public GameObject[] go;
+		[HideInInspector]
+		public Transform[] loc;
 
 		public void GetLocatorPoints(string tag) {
 			GameObject[] locObject = GameObject.FindGameObjectsWithTag(tag).OrderBy(go => go.name).ToArray();
@@ -209,40 +213,6 @@ public class Project2GameManager : MonoBehaviour {
 		}
 	}
 
-	// Road Block
-	[Serializable]
-	public class RoadBlockSetUp {
-		[Tooltip("Road Block prefab")]
-		public GameObject prefab;
-		[Tooltip("GameObject to organize generated road blocks")]
-		public GameObject holder;
-		[Tooltip("The Road Block tag")]
-		public string tag = "RoadBlock";
-
-		[HideInInspector]
-		public GameObject[] go;
-
-		public void Place(Transform[] crossLoc) {
-			go = new GameObject[crossLoc.Length];
-
-			for (int i = 0; i < crossLoc.Length; i++) {
-				go[i] = Instantiate(prefab,
-					crossLoc[i].position,
-					crossLoc[i].localRotation);
-				go[i].name = "CrossWalk " + i + " (clone)";
-				go[i].transform.parent = holder.transform;
-				go[i].SetActive(false);
-			}
-		}
-
-		/*
-		public void BlockStreet(int index) {
-			if (!go[index].activeSelf) {
-				go[index].SetActive(true);
-			}
-		}*/
-	}
-
 	public static float delivered = 0;
 
 	// Cars
@@ -255,8 +225,6 @@ public class Project2GameManager : MonoBehaviour {
 	public PedestrianSetUp ped = new PedestrianSetUp();
 	// Cross Walk
 	public CrossWalkSetUp cross = new CrossWalkSetUp();
-	// Road Block
-	public RoadBlockSetUp block = new RoadBlockSetUp();
 
 
 	// Use this for initialization
@@ -274,7 +242,6 @@ public class Project2GameManager : MonoBehaviour {
 		ped.Spawn(ped.toSpawn);
 		car.Spawn(car.toSpawn);
 		cross.Place(cross.loc.Length);
-		block.Place(cross.loc);
 	}
 	
 	// Update is called once per frame

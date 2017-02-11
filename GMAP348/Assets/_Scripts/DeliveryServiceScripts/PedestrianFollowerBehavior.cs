@@ -13,9 +13,6 @@ public class PedestrianFollowerBehavior : MonoBehaviour {
 	private Project2GameManager gameManager;
 	private NavMeshAgent agent;
 
-	public bool isCrossing = false;
-	//public int karmaTrack = 0;
-
 	// Use this for initialization
 	void Start() {
 		gameManager = GameObject.FindGameObjectWithTag("ManagerTag").GetComponent<Project2GameManager>();
