@@ -62,3 +62,33 @@ C:\Users\tjs335\Desktop\GMAP348\Temp\bin\Debug\UnityEngine.VR.xml
 C:\Users\tjs335\Desktop\GMAP348\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 C:\Users\tjs335\Desktop\GMAP348\obj\Debug\Assembly-CSharp.dll
 C:\Users\tjs335\Desktop\GMAP348\obj\Debug\Assembly-CSharp.pdb
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\obj\Debug\Assembly-CSharp.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\Assembly-CSharp.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\Assembly-CSharp.pdb
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\UnityEditor.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\UnityEngine.Analytics.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\UnityEngine.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\UnityEngine.HoloLens.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\UnityEngine.Networking.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\UnityEngine.PlaymodeTestsRunner.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\UnityEngine.UI.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\UnityEngine.VR.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\Mono.Cecil.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\Unity.SerializationLogic.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\Unity.DataContract.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\Unity.UNetWeaver.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\Unity.CecilTools.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\Mono.Cecil.Pdb.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\Mono.Cecil.Mdb.dll
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\UnityEngine.xml
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\UnityEditor.xml
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\UnityEngine.UI.xml
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\UnityEngine.Networking.xml
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\UnityEngine.PlaymodeTestsRunner.xml
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\UnityEngine.Analytics.xml
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\UnityEngine.HoloLens.xml
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\Temp\bin\Debug\UnityEngine.VR.xml
+G:\User Files\Documents\ExperimentalGames_Proj01\GMAP348\obj\Debug\Assembly-CSharp.pdb

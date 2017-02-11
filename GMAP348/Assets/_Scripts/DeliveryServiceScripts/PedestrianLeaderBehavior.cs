@@ -10,8 +10,11 @@ public class PedestrianLeaderBehavior : MonoBehaviour {
 	public enum State {
 		Start,
 		Travelling,
-		ReachedGoal
+		Visiting
 	}
+
+	private float visitTimer = 0;
+	private float visitDuration = 0;
 
 	[Serializable]
 	public class Followers {
@@ -45,7 +48,7 @@ public class PedestrianLeaderBehavior : MonoBehaviour {
 	}
 
 	public int index;
-	public float checkDistance = 4.0f;
+	public float checkDistance = 2.0f;
 	public Color color;
 
 	public Followers followers = new Followers();
@@ -76,13 +79,18 @@ public class PedestrianLeaderBehavior : MonoBehaviour {
 
 		} else if (currState == State.Travelling) {
 			if (Vector3.Distance (transform.position, finalDestination) < checkDistance) {
-				currState = State.ReachedGoal;
+				visitDuration = UnityEngine.Random.Range (2.0f, 5.0f);
+				visitTimer = 0;
+				currState = State.Visiting;
+				Debug.Log (this.gameObject.transform.parent.name + " is visiting");
 			}
 
-		} else if (currState == State.ReachedGoal) {
-
-			// reset
-			currState = State.Start;
+		} else if (currState == State.Visiting) {
+			visitTimer += Time.deltaTime;
+			if (visitTimer >= visitDuration) {
+				// reset
+				currState = State.Start;
+			}
 		}
 
 		followers.CheckFollowers(followers.count, this.transform);

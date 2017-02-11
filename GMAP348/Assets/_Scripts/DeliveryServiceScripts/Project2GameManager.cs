@@ -24,11 +24,10 @@ public class Project2GameManager : MonoBehaviour {
 		[HideInInspector]
 		public List<GameObject> cars;
 
-		public void Spawn(int needed) { // add in GameObject[] pos
+		public void Spawn(int needed, GameObject[] pos) {
 			for (int i = 0; i < needed; i++) {
 				cars.Add(Instantiate(prefab,
-					Vector3.zero,
-					//pos[UE.Random.Range].transform.position,
+					pos[(int)UnityEngine.Random.Range(0, pos.Length)].transform.position,
 					Quaternion.identity));
 				cars[i].name = "car " + i + " (clone)";
 				cars[i].GetComponent<CarBehavior>().index = i;
@@ -115,7 +114,7 @@ public class Project2GameManager : MonoBehaviour {
 		[Tooltip("The Pedestrian tag")]
 		public string tag = "Pedestrian";
 		[Tooltip("The Pedestrin Location Point tag")]
-		public string pointTag = "PedestrianPoint";
+		public string pointTag = "VisitPoint";
 
 		[HideInInspector]
 		public List<GameObject> pedestrians;
@@ -213,6 +212,29 @@ public class Project2GameManager : MonoBehaviour {
 		}
 	}
 
+	// Cop
+	[Serializable]
+	public class CopSetUp {
+		[Tooltip("The Cop prefab")]
+		public GameObject prefab;
+
+		[HideInInspector]
+		public GameObject copCar;
+
+		//public void Spawn(GameObject car) {
+		public void Spawn(int carID) {
+			if (copCar == null) {
+				Instantiate (prefab, new Vector3 (43, 0, 0), Quaternion.Euler (0, -90f, 0));
+				//copCar.name = "Cop";
+			}
+			if (copCar.GetComponent<CopBehavior> () != null) {
+				//copCar.GetComponent<CopBehavior>().ChaseCar(car);
+				copCar.GetComponent<CopBehavior> ().ChaseCar (carID);
+			}
+		}
+	}
+
+
 	public static float delivered = 0;
 
 	// Cars
@@ -225,6 +247,10 @@ public class Project2GameManager : MonoBehaviour {
 	public PedestrianSetUp ped = new PedestrianSetUp();
 	// Cross Walk
 	public CrossWalkSetUp cross = new CrossWalkSetUp();
+	// Cop
+	public CopSetUp cop = new CopSetUp();
+
+	private RaycastHit carHit;
 
 
 	// Use this for initialization
@@ -240,7 +266,7 @@ public class Project2GameManager : MonoBehaviour {
 
 		// Spawn characters/Generate objects
 		ped.Spawn(ped.toSpawn);
-		car.Spawn(car.toSpawn);
+		car.Spawn(car.toSpawn,del.go);
 		cross.Place(cross.loc.Length);
 	}
 	
@@ -252,6 +278,16 @@ public class Project2GameManager : MonoBehaviour {
 		// handle roadblock situation
 
 		// handle police chase situation
+		if (Input.GetMouseButtonDown(0)) {
+			Ray tempRay = Camera.main.ScreenPointToRay (Input.mousePosition);
+			if (Physics.Raycast (tempRay, out carHit, 100000)) {
+				Debug.DrawLine (tempRay.origin, carHit.point, Color.cyan);
+				if (carHit.collider.gameObject.GetComponent<CarBehavior>().didCrime == true) {
+					//cop.Spawn (carHit.collider.gameObject);
+					cop.Spawn(carHit.transform.gameObject.GetComponent<CarBehavior>().index);
+				}
+			}
+		}
 
 		// Quit game
 		if (Input.GetKey(KeyCode.Space)) {

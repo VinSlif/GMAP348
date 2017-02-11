@@ -21,10 +21,12 @@ public class CarBehavior : MonoBehaviour {
 
 	public ParticleSystem bloodPrefab;
 	public bool didCrime = false;
+	public bool arrested = false;
 	public Color color;
 
 	private Project2GameManager gameManager;
 	private State currState = State.Start;
+	private State prevState;
 	private NavMeshAgent agent;
 
 	// Prevent recursion
@@ -105,6 +107,10 @@ public class CarBehavior : MonoBehaviour {
 			}
 
 			Physics.IgnoreCollision(col.gameObject.GetComponent<Collider>(), this.GetComponent<Collider>());
+		} else if (!arrested && didCrime && col.gameObject == gameManager.cop.copCar){
+			// arrested changed to true by copCar
+			prevState = currState;
+			currState = State.Arrested;
 		}
 	}
 
