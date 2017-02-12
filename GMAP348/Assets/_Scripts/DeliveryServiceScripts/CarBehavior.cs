@@ -18,10 +18,15 @@ public class CarBehavior : MonoBehaviour {
 
 	[HideInInspector]
 	public int index;
+	[HideInInspector]
+	public bool didCrime = false;
+	[HideInInspector]
+	public bool arresting = false;
+	[HideInInspector]
+	public GameObject arrestingOfficer;
 
 	public ParticleSystem bloodPrefab;
-	public bool didCrime = false;
-	public bool arrested = false;
+
 	public Color color;
 
 	private Project2GameManager gameManager;
@@ -31,6 +36,9 @@ public class CarBehavior : MonoBehaviour {
 
 	// Prevent recursion
 	private bool hasPoint = false;
+	private Vector3 finalDestination;
+	private Vector3 chaseDestination;
+	private bool setToChaseState = false;
 	// Check if reached delivery point
 	private float checkDistance = 3.0f;
 
@@ -40,44 +48,113 @@ public class CarBehavior : MonoBehaviour {
 
 		agent = GetComponent<NavMeshAgent>();
 
-		AllChangeColor (color);
+		AllChangeColor(color);
 	}
 
 	// Update is called once per frame
 	void Update() {
 
-		if (currState == State.Start) {
+		switch(currState) {
+		case State.Start:
 			// Spawn pickup
 			gameManager.pickUp.Spawn(index);
 
 			hasPoint = false;
 
+			setToChaseState = false;
+			chaseDestination = Vector3.zero;
+			arrestingOfficer = null;
+
+			if (arresting) {
+				currState = State.Chased;
+			}
+
 			currState = State.GetPickup;
-
-		} else if (currState == State.GetPickup) {
+			break;
+		case State.GetPickup:
 			// Go to Pick Up
-			agent.destination = gameManager.pickUp.pickPoint.position;
+			agent.SetDestination(gameManager.pickUp.pickPoint.position);
 
-			// Handled by collision
+			prevState = currState;
 
-		} else if (currState == State.Delivering) {
-			if (!hasPoint) { // Set destination once
-				agent.destination = gameManager.del.SelectPoint();
-				hasPoint = true;
+			if (arresting) {
+				currState = State.Chased;
 			}
 
 			// Handled by collision
+			break;
+		case State.Delivering:
+			if (!hasPoint) { // Set destination once
+				finalDestination = gameManager.del.SelectPoint();
+				agent.SetDestination(finalDestination);
+				hasPoint = true;
+			}
 
-		} else if (currState == State.Delivered) {
+			prevState = currState;
+
+			if (arresting) {
+				currState = State.Chased;
+			}
+
+			// Handled by collision
+			break;
+		case State.Delivered:
 			Project2GameManager.delivered++;
 
 			// reset
 			currState = State.Start;
+			break;
+		case State.Chased:
+
+			/* Get Rid of pick up and delivery point
+			 * not working right now
+			if (!setToChaseState) {
+				setToChaseState = true;
+				finalDestination = Vector3.zero;
+
+				if (prevState == State.Delivering) {
+					gameManager.del.go[gameManager.del.interpretPoint(finalDestination)].SetActive(false);
+				}
+
+				GameObject[] pickups = FindObjectsOfType(typeof(PickUpBehavior)) as GameObject[];
+				for (int i = 0; i < pickups.Length; i++) {
+					if (pickups[i].GetComponent<PickUpBehavior>().index == index) {
+						Destroy(pickups[i].gameObject);
+					}
+				}
+			}
+			*/
+
+			if (!hasPoint) { // Set destination once
+				chaseDestination = gameManager.del.randomPoint();
+				agent.SetDestination(chaseDestination);
+				hasPoint = true;
+			}
+
+			if (Vector3.Distance(transform.position, chaseDestination) <= checkDistance) {
+				hasPoint = false;
+			}
+				
+			if (Vector3.Distance(transform.position, arrestingOfficer.transform.position) <= checkDistance) {
+				arresting = false;
+				currState = State.Arrested;
+			}
+
+			break;
+		case State.Arrested:
+			if (arrestingOfficer != null) {
+				agent.SetDestination(arrestingOfficer.transform.position);
+			} else {
+				didCrime = false;
+				currState = State.Start;
+			}
+
+			break;
 		}
 	}
 
 	void OnTriggerEnter(Collider col) {
-		if (col.gameObject.GetComponent<PickUpBehavior>() != null && currState == State.GetPickup) {
+		if (currState == State.GetPickup && col.gameObject.GetComponent<PickUpBehavior>() != null) {
 			if (col.gameObject.GetComponent<PickUpBehavior>().index == index) {
 				col.transform.position = transform.GetChild(0).transform.position;
 				col.transform.parent = transform;
@@ -86,8 +163,8 @@ public class CarBehavior : MonoBehaviour {
 			}
 		}
 
-		if (col.gameObject.tag == gameManager.del.pointTag && currState == State.Delivering) {
-			if (Vector3.Distance(agent.destination, col.gameObject.transform.position) <= checkDistance) {
+		if (currState == State.Delivering && col.gameObject.tag == gameManager.del.pointTag) {
+			if (Vector3.Distance(transform.position, finalDestination) <= checkDistance) {
 				Destroy(transform.GetChild(2).gameObject);
 				col.gameObject.SetActive(false);
 
@@ -102,16 +179,18 @@ public class CarBehavior : MonoBehaviour {
 			didCrime = true;
 
 			for (int i = 0; i < col.contacts.Length; i++) {
-				ParticleSystem blood = Instantiate (bloodPrefab, col.contacts [i].point, Quaternion.identity);
+				ParticleSystem blood = Instantiate(bloodPrefab, col.contacts[i].point, Quaternion.identity);
 				blood.transform.parent = transform;
 			}
 
 			Physics.IgnoreCollision(col.gameObject.GetComponent<Collider>(), this.GetComponent<Collider>());
-		} else if (!arrested && didCrime && col.gameObject == gameManager.cop.copCar){
-			// arrested changed to true by copCar
-			prevState = currState;
-			currState = State.Arrested;
 		}
+
+		/*
+		if (currState == State.Chased && didCrime && col.gameObject == arrestingOfficer) {
+			// arrested changed to true by copCar
+			currState = State.Arrested;
+		}*/
 	}
 
 	void AllChangeColor(Color color) {

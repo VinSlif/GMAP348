@@ -31,7 +31,7 @@ public class Project2GameManager : MonoBehaviour {
 					Quaternion.identity));
 				cars[i].name = "car " + i + " (clone)";
 				cars[i].GetComponent<CarBehavior>().index = i;
-				cars [i].GetComponent<CarBehavior> ().color = new Color(((int)UnityEngine.Random.Range(0, 256)) / 255.0f,
+				cars[i].GetComponent<CarBehavior>().color = new Color(((int)UnityEngine.Random.Range(0, 256)) / 255.0f,
 					((int)UnityEngine.Random.Range(0, 256)) / 255.0f,
 					((int)UnityEngine.Random.Range(0, 256)) / 255.0f,
 					1);
@@ -100,6 +100,22 @@ public class Project2GameManager : MonoBehaviour {
 			go[index].SetActive(true);
 			return go[index].transform.position;
 		}
+
+		public Vector3 randomPoint() {
+			int index = (int)UnityEngine.Random.Range(0, go.Length);
+			return go[index].transform.position;
+		}
+
+		public int interpretPoint(Vector3 pos) {
+			int index = -1;
+			for (int i = 0; i < go.Length; i++) {
+				if (go[i].transform.position == pos) {
+					index = i;
+					break;
+				}
+			}
+			return index;
+		}
 	}
 
 	// Pedestrians
@@ -114,12 +130,16 @@ public class Project2GameManager : MonoBehaviour {
 		[Tooltip("The Pedestrian tag")]
 		public string tag = "Pedestrian";
 		[Tooltip("The Pedestrin Location Point tag")]
-		public string pointTag = "VisitPoint";
+		public string pointTag = "PedestrianPoint";
+		[Tooltip("The Pedestrin Visit Point tag")]
+		public string visitTag = "VisitPoint";
 
 		[HideInInspector]
 		public List<GameObject> pedestrians;
 		[HideInInspector]
 		public Transform[] loc;
+		[HideInInspector]
+		public Transform[] visitLoc;
 
 		public void GetLocatorPoints(string tag) {
 			GameObject[] locObject = GameObject.FindGameObjectsWithTag(tag).OrderBy(go => go.name).ToArray();
@@ -127,6 +147,15 @@ public class Project2GameManager : MonoBehaviour {
 			loc = new Transform[locObject.Length];
 			for (int i = 0; i < loc.Length; i++) {
 				loc[i] = locObject[i].transform;
+			}
+		}
+
+		public void GetVisitPoints(string tag) {
+			GameObject[] locObject = GameObject.FindGameObjectsWithTag(tag).OrderBy(go => go.name).ToArray();
+
+			visitLoc = new Transform[locObject.Length];
+			for (int i = 0; i < visitLoc.Length; i++) {
+				visitLoc[i] = locObject[i].transform;
 			}
 		}
 
@@ -151,6 +180,20 @@ public class Project2GameManager : MonoBehaviour {
 
 		public Vector3 SelectPoint() {
 			return loc[(int)UnityEngine.Random.Range(0, loc.Length)].position;
+		}
+
+		public Transform GetClosestDestination(Vector3 pos, Transform[] locPoints) {
+			Transform selected = null;
+			float closestDist = Mathf.Infinity;
+
+			foreach(Transform t in locPoints) {
+				float checkDist = Vector3.Distance(pos, t.position);
+				if (checkDist < closestDist) {
+					selected = t;
+					closestDist = checkDist;
+				}
+			}
+			return selected;
 		}
 
 		public void CheckPedestrians(int count) {
@@ -215,22 +258,21 @@ public class Project2GameManager : MonoBehaviour {
 	// Cop
 	[Serializable]
 	public class CopSetUp {
-		[Tooltip("The Cop prefab")]
+		[Tooltip("The Cop Car prefab")]
 		public GameObject prefab;
+		[Tooltip("The Cop Car spawn point")]
+		public Transform spawnPoint;
+		[Tooltip("GameObject to organize generated Cops")]
+		public GameObject holder;
 
-		[HideInInspector]
-		public GameObject copCar;
+		public GameObject Spawn(GameObject chaseCar) {
+			GameObject spawnCar = Instantiate(prefab,
+				                      spawnPoint.position,
+				                      spawnPoint.localRotation);
+			spawnCar.GetComponent<CopBehavior>().chasingCar = chaseCar;
+			spawnCar.transform.parent = holder.transform;
 
-		//public void Spawn(GameObject car) {
-		public void Spawn(int carID) {
-			if (copCar == null) {
-				Instantiate (prefab, new Vector3 (43, 0, 0), Quaternion.Euler (0, -90f, 0));
-				//copCar.name = "Cop";
-			}
-			if (copCar.GetComponent<CopBehavior> () != null) {
-				//copCar.GetComponent<CopBehavior>().ChaseCar(car);
-				copCar.GetComponent<CopBehavior> ().ChaseCar (carID);
-			}
+			return spawnCar;
 		}
 	}
 
@@ -257,6 +299,7 @@ public class Project2GameManager : MonoBehaviour {
 	void Start() {
 		// Get locator points
 		ped.GetLocatorPoints(ped.pointTag);
+		ped.GetVisitPoints(ped.visitTag);
 		cross.GetLocatorPoints(cross.pointTag);
 
 		// Initialize delivery points
@@ -266,7 +309,7 @@ public class Project2GameManager : MonoBehaviour {
 
 		// Spawn characters/Generate objects
 		ped.Spawn(ped.toSpawn);
-		car.Spawn(car.toSpawn,del.go);
+		car.Spawn(car.toSpawn, del.go);
 		cross.Place(cross.loc.Length);
 	}
 	
@@ -279,12 +322,15 @@ public class Project2GameManager : MonoBehaviour {
 
 		// handle police chase situation
 		if (Input.GetMouseButtonDown(0)) {
-			Ray tempRay = Camera.main.ScreenPointToRay (Input.mousePosition);
-			if (Physics.Raycast (tempRay, out carHit, 100000)) {
-				Debug.DrawLine (tempRay.origin, carHit.point, Color.cyan);
-				if (carHit.collider.gameObject.GetComponent<CarBehavior>().didCrime == true) {
-					//cop.Spawn (carHit.collider.gameObject);
-					cop.Spawn(carHit.transform.gameObject.GetComponent<CarBehavior>().index);
+			Ray tempRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+			if (Physics.Raycast(tempRay, out carHit, 100.0f)) {
+				if (carHit.transform.gameObject.GetComponent<CarBehavior>() != null) {
+					//Debug.DrawLine(tempRay.origin, carHit.point, Color.cyan);
+					if (carHit.collider.gameObject.GetComponent<CarBehavior>().didCrime
+					    && !carHit.collider.gameObject.GetComponent<CarBehavior>().arresting) {
+						carHit.transform.gameObject.GetComponent<CarBehavior>().arresting = true;
+						carHit.transform.gameObject.GetComponent<CarBehavior>().arrestingOfficer = cop.Spawn(carHit.transform.gameObject);
+					}
 				}
 			}
 		}

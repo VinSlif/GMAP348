@@ -30,7 +30,7 @@ public class CrossWalkBehavior : MonoBehaviour {
 	void Start() {
 		//gameManager = GameObject.FindGameObjectWithTag ("ManagerTag").GetComponent<Project2GameManager> ();
 
-		roadBlockMesh = transform.GetChild (3).gameObject;
+		roadBlockMesh = transform.GetChild(3).gameObject;
 
 		// Set Nav Mesh Obstacles references
 		pedObstacle = transform.GetChild(1).GetComponentsInChildren<NavMeshObstacle>();
@@ -39,60 +39,70 @@ public class CrossWalkBehavior : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		if (currState == State.Cars) {
 
+		switch(currState) {
+		case State.Cars:
 			for (int i = 0; i < carObstacle.Length; i++) {
-				carObstacle [i].carving = false;
-				carObstacle [i].enabled = false;
+				carObstacle[i].carving = false;
+				carObstacle[i].enabled = false;
 			}
 			for (int i = 0; i < pedObstacle.Length; i++) {
-				pedObstacle [i].carving = true;
-				pedObstacle [i].enabled = true;
+				pedObstacle[i].enabled = true;
+				pedObstacle[i].carving = true;
 			}
 
 			if (pedsInTriggers >= 3 && currState != State.Blocked) {
-				if ((int)Random.Range (0, chance + 1) == 1) {
+				if ((int)Random.Range(0, chance + 1) == 1) {
 					currState = State.Chaos;
 				} else {
 					currState = State.Peds;
 				}
 			}
-
-		} else if (currState == State.Peds) {
-
+			
+			break;
+		case State.Peds:
 			for (int i = 0; i < carObstacle.Length; i++) {
-				carObstacle [i].carving = true;
-				carObstacle [i].enabled = true;
+				carObstacle[i].enabled = true;
+				carObstacle[i].carving = true;
 			}
 			for (int i = 0; i < pedObstacle.Length; i++) {
-				pedObstacle [i].carving = false;
-				pedObstacle [i].enabled = false;
+				pedObstacle[i].carving = false;
+				pedObstacle[i].enabled = false;
 			}
 
 			if (pedsInTriggers <= 1 && currState != State.Blocked) {
 				currState = State.Cars;
 			}
-
-		} else if (currState == State.Chaos) {
 			
+			break;
+		case State.Chaos:
 			for (int i = 0; i < carObstacle.Length; i++) {
-				carObstacle [i].carving = false;
-				carObstacle [i].enabled = false;
+				carObstacle[i].carving = false;
+				carObstacle[i].enabled = false;
 			}
 			for (int i = 0; i < pedObstacle.Length; i++) {
-				pedObstacle [i].carving = false;
-				pedObstacle [i].enabled = false;
+				pedObstacle[i].carving = false;
+				pedObstacle[i].enabled = false;
+			}
+			
+			break;
+		case State.Blocked:
+			for (int i = 0; i < carObstacle.Length; i++) {
+				carObstacle[i].enabled = true;
+				carObstacle[i].carving = true;
+			}
+			for (int i = 0; i < pedObstacle.Length; i++) {
+				pedObstacle[i].enabled = true;
+				pedObstacle[i].carving = true;
 			}
 
-		} else if (currState == State.Blocked) {
-			// wait for seconds
-			// then block everything for time
+			break;
 		}
 
 		if (currState == State.Blocked) {
-			roadBlockMesh.SetActive (true);
+			roadBlockMesh.SetActive(true);
 		} else {
-			roadBlockMesh.SetActive (false);
+			roadBlockMesh.SetActive(false);
 		}
 	}
 }

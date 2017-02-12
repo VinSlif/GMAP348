@@ -10,11 +10,8 @@ public class PedestrianLeaderBehavior : MonoBehaviour {
 	public enum State {
 		Start,
 		Travelling,
-		Visiting
+		Visiting,
 	}
-
-	private float visitTimer = 0;
-	private float visitDuration = 0;
 
 	[Serializable]
 	public class Followers {
@@ -48,15 +45,20 @@ public class PedestrianLeaderBehavior : MonoBehaviour {
 	}
 
 	public int index;
-	public float checkDistance = 2.0f;
 	public Color color;
 
 	public Followers followers = new Followers();
 
 	private Project2GameManager gameManager;
 	private State currState = State.Start;
+
 	private NavMeshAgent agent;
+
 	private Vector3 finalDestination;
+	private float checkDistance = 3.0f;
+
+	private float visitDuration = 0;
+	private float visitTimer = 0;
 
 	// Use this for initialization
 	void Start() {
@@ -71,26 +73,36 @@ public class PedestrianLeaderBehavior : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 
-		if (currState == State.Start) {
-			finalDestination = gameManager.ped.SelectPoint ();
-			agent.destination = finalDestination;
+		switch(currState) {
+		case State.Start:
+			finalDestination = gameManager.ped.SelectPoint();
+			agent.SetDestination(finalDestination);
 
 			currState = State.Travelling;
 
-		} else if (currState == State.Travelling) {
-			if (Vector3.Distance (transform.position, finalDestination) < checkDistance) {
-				visitDuration = UnityEngine.Random.Range (2.0f, 5.0f);
-				visitTimer = 0;
+			break;
+		case State.Travelling:
+			if (Vector3.Distance(transform.position, finalDestination) < checkDistance) {
+				// set visit timers
+				visitDuration = UnityEngine.Random.Range(2.0f, 5.0f);
+				visitTimer = visitDuration;
+
+				// pick visit destination
+				finalDestination = gameManager.ped.GetClosestDestination(transform.position, gameManager.ped.visitLoc).position;
+				agent.SetDestination(finalDestination);
+
 				currState = State.Visiting;
-				Debug.Log (this.gameObject.transform.parent.name + " is visiting");
 			}
 
-		} else if (currState == State.Visiting) {
-			visitTimer += Time.deltaTime;
-			if (visitTimer >= visitDuration) {
+			break;
+		case State.Visiting:
+			visitTimer -= Time.deltaTime;
+			if (visitTimer <= 0) {
 				// reset
 				currState = State.Start;
 			}
+
+			break;
 		}
 
 		followers.CheckFollowers(followers.count, this.transform);

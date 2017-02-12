@@ -23,7 +23,7 @@ public class PedestrianFollowerBehavior : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 		if (leader != null) {
-			agent.destination = leader.transform.position;
+			agent.SetDestination(leader.transform.position);
 		} else {
 			Destroy(this.transform.parent.gameObject);
 			Destroy(this.gameObject);
