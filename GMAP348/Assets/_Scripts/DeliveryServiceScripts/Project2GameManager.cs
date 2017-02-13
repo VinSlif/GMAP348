@@ -21,21 +21,18 @@ public class Project2GameManager : MonoBehaviour {
 		[Tooltip("The Delivery Car tag")]
 		public string tag = "DeliveryCar";
 
-		[HideInInspector]
-		public List<GameObject> cars;
-
 		public void Spawn(int needed, GameObject[] pos) {
 			for (int i = 0; i < needed; i++) {
-				cars.Add(Instantiate(prefab,
-					pos[(int)UnityEngine.Random.Range(0, pos.Length)].transform.position,
-					Quaternion.identity));
-				cars[i].name = "car " + i + " (clone)";
-				cars[i].GetComponent<CarBehavior>().index = i;
-				cars[i].GetComponent<CarBehavior>().color = new Color(((int)UnityEngine.Random.Range(0, 256)) / 255.0f,
+				GameObject newCar = Instantiate(prefab,
+					                    pos[(int)UnityEngine.Random.Range(0, pos.Length)].transform.position,
+					                    Quaternion.identity);
+				newCar.name = "car " + i + " (clone)";
+				newCar.GetComponent<CarBehavior>().index = i;
+				newCar.GetComponent<CarBehavior>().color = new Color(((int)UnityEngine.Random.Range(0, 256)) / 255.0f,
 					((int)UnityEngine.Random.Range(0, 256)) / 255.0f,
 					((int)UnityEngine.Random.Range(0, 256)) / 255.0f,
 					1);
-				cars[i].transform.parent = holder.transform;
+				newCar.transform.parent = holder.transform;
 			}
 		}
 	}
