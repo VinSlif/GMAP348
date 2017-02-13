@@ -25,6 +25,10 @@ public class CarBehavior : MonoBehaviour {
 	[HideInInspector]
 	public GameObject arrestingOfficer;
 
+	// Did crime timer
+	public float criminalResetTime = 5.0f;
+	private float crimeTimer = 0;
+
 	public ParticleSystem bloodPrefab;
 
 	public Color color;
@@ -53,6 +57,15 @@ public class CarBehavior : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
+
+		if (didCrime) {
+			crimeTimer -= Time.deltaTime;
+			if (crimeTimer <= 0) {
+				didCrime = false;
+			}
+		} else {
+			crimeTimer = criminalResetTime;
+		}
 
 		switch(currState) {
 		case State.Start:

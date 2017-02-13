@@ -226,8 +226,6 @@ public class Project2GameManager : MonoBehaviour {
 		public string pointTag = "CrossWalkPoint";
 
 		[HideInInspector]
-		public GameObject[] go;
-		[HideInInspector]
 		public Transform[] loc;
 
 		public void GetLocatorPoints(string tag) {
@@ -240,14 +238,12 @@ public class Project2GameManager : MonoBehaviour {
 		}
 
 		public void Place(int needed) {
-			go = new GameObject[needed];
-
 			for (int i = 0; i < needed; i++) {
-				go[i] = Instantiate(prefab,
-					loc[i].position,
-					loc[i].localRotation);
-				go[i].name = "CrossWalk " + i + " (clone)";
-				go[i].transform.parent = holder.transform;
+				GameObject newCross = Instantiate(prefab,
+					                      loc[i].position,
+					                      loc[i].localRotation);
+				newCross.name = "CrossWalk " + i + " (clone)";
+				newCross.transform.parent = holder.transform;
 			}
 		}
 	}
@@ -313,9 +309,8 @@ public class Project2GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 
+		// check if all pedestrian leaders still exist
 		ped.CheckPedestrians(ped.toSpawn);
-
-		// handle roadblock situation
 
 		// handle police chase situation
 		if (Input.GetMouseButtonDown(0)) {
