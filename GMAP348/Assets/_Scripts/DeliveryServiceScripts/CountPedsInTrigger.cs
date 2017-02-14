@@ -8,26 +8,54 @@ public class CountPedsInTrigger : MonoBehaviour {
 
 	private CrossWalkBehavior cross;
 
+	private bool setBlockState = false;
+	public float waitTime = 10.0f;
+	private float waitTimer = 0;
+
 	// Use this for initialization
-	void Start () {
-		gameManager = GameObject.FindGameObjectWithTag ("ManagerTag").GetComponent<Project2GameManager> ();
-		cross = transform.parent.GetComponent<CrossWalkBehavior> ();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	void Start() {
+		gameManager = GameObject.FindGameObjectWithTag("ManagerTag").GetComponent<Project2GameManager>();
+		cross = transform.parent.GetComponent<CrossWalkBehavior>();
 	}
 
-	void OnTriggerEnter (Collider col) {
-		if (col.gameObject.tag == gameManager.ped.tag) {
-			cross.pedsInTriggers++;
+	void Update() {
+		if (setBlockState) {
+			waitTimer -= Time.deltaTime;
+
+			if (waitTimer <= 0) {
+				cross.currState = CrossWalkBehavior.State.Blocked;
+				setBlockState = false;
+			}
+		} else {
+			waitTimer = waitTime;
 		}
 	}
 
-	void OnTriggerExit (Collider col) {
+	void OnTriggerEnter(Collider col) {
 		if (col.gameObject.tag == gameManager.ped.tag) {
-			cross.pedsInTriggers--;
+			cross.pedsInTrigger++;
+		}
+
+		if (col.gameObject.tag == gameManager.car.tag) {
+			if (col.gameObject.GetComponent<CarBehavior>().didCrime
+			    && col.gameObject.GetComponent<CarBehavior>().arrestingOfficer == null) {
+				setBlockState = true;
+			}
+		}
+	}
+
+	void OnTriggerStay(Collider col) {
+		if (col.gameObject.tag == gameManager.car.tag) {
+			if (col.gameObject.GetComponent<CarBehavior>().didCrime
+			    && col.gameObject.GetComponent<CarBehavior>().arrestingOfficer == null) {
+				setBlockState = true;
+			}
+		}
+	}
+
+	void OnTriggerExit(Collider col) {
+		if (col.gameObject.tag == gameManager.ped.tag) {
+			cross.pedsInTrigger--;
 		}
 	}
 }

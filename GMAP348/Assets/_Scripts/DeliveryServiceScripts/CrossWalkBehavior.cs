@@ -15,11 +15,16 @@ public class CrossWalkBehavior : MonoBehaviour {
 	[Tooltip("1 out of [chance]")]
 	public int chance = 5;
 
+	[Tooltip("Time (sec) spent in the blocked state")]
+	public float blockTime = 10.0f;
+	private float blockTimer = 0;
+
 	[HideInInspector]
-	public int pedsInTriggers = 0;
+	public int pedsInTrigger = 0;
 
 	//private Project2GameManager gameManager;
-	private State currState = State.Peds;
+	[HideInInspector]
+	public State currState = State.Peds;
 
 	private GameObject roadBlockMesh;
 
@@ -51,13 +56,15 @@ public class CrossWalkBehavior : MonoBehaviour {
 				pedObstacle[i].carving = true;
 			}
 
-			if (pedsInTriggers >= 3 && currState != State.Blocked) {
+			if (pedsInTrigger >= 3 && currState != State.Blocked) {
 				if ((int)Random.Range(0, chance + 1) == 1) {
 					currState = State.Chaos;
 				} else {
 					currState = State.Peds;
 				}
 			}
+
+			blockTimer = blockTime;
 			
 			break;
 		case State.Peds:
@@ -70,10 +77,12 @@ public class CrossWalkBehavior : MonoBehaviour {
 				pedObstacle[i].enabled = false;
 			}
 
-			if (pedsInTriggers <= 1 && currState != State.Blocked) {
+			if (pedsInTrigger <= 1 && currState != State.Blocked) {
 				currState = State.Cars;
 			}
-			
+
+			blockTimer = blockTime;
+
 			break;
 		case State.Chaos:
 			for (int i = 0; i < carObstacle.Length; i++) {
@@ -84,6 +93,8 @@ public class CrossWalkBehavior : MonoBehaviour {
 				pedObstacle[i].carving = false;
 				pedObstacle[i].enabled = false;
 			}
+
+			blockTimer = blockTime;
 			
 			break;
 		case State.Blocked:
@@ -94,6 +105,11 @@ public class CrossWalkBehavior : MonoBehaviour {
 			for (int i = 0; i < pedObstacle.Length; i++) {
 				pedObstacle[i].enabled = true;
 				pedObstacle[i].carving = true;
+			}
+
+			blockTimer -= Time.deltaTime;
+			if (blockTimer <= 0) {
+				currState = State.Cars;
 			}
 
 			break;
