@@ -319,8 +319,7 @@ public class Project2GameManager : MonoBehaviour {
 				if (carHit.transform.gameObject.GetComponent<CarBehavior>() != null) {
 					//Debug.DrawLine(tempRay.origin, carHit.point, Color.cyan);
 					if (carHit.collider.gameObject.GetComponent<CarBehavior>().didCrime
-					    && !carHit.collider.gameObject.GetComponent<CarBehavior>().arresting) {
-						carHit.transform.gameObject.GetComponent<CarBehavior>().arresting = true;
+					    && carHit.collider.gameObject.GetComponent<CarBehavior>().arrestingOfficer == null) {
 						carHit.transform.gameObject.GetComponent<CarBehavior>().arrestingOfficer = cop.Spawn(carHit.transform.gameObject);
 					}
 				}

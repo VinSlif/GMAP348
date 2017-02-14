@@ -21,8 +21,6 @@ public class CarBehavior : MonoBehaviour {
 	[HideInInspector]
 	public bool didCrime = false;
 	[HideInInspector]
-	public bool arresting = false;
-	[HideInInspector]
 	public GameObject arrestingOfficer;
 
 	// Did crime timer
@@ -60,7 +58,7 @@ public class CarBehavior : MonoBehaviour {
 
 		if (didCrime) {
 			crimeTimer -= Time.deltaTime;
-			if (crimeTimer <= 0 && arrestingOfficer == null) {
+			if (crimeTimer <= 0 && (currState != State.Chased || currState != State.Arrested)) {
 				didCrime = false;
 			}
 		} else {
@@ -78,7 +76,7 @@ public class CarBehavior : MonoBehaviour {
 			chaseDestination = Vector3.zero;
 			arrestingOfficer = null;
 
-			if (arresting) {
+			if (arrestingOfficer != null) {
 				currState = State.Chased;
 			}
 
@@ -90,7 +88,7 @@ public class CarBehavior : MonoBehaviour {
 
 			prevState = currState;
 
-			if (arresting) {
+			if (arrestingOfficer != null) {
 				currState = State.Chased;
 			}
 
@@ -105,7 +103,7 @@ public class CarBehavior : MonoBehaviour {
 
 			prevState = currState;
 
-			if (arresting) {
+			if (arrestingOfficer != null) {
 				currState = State.Chased;
 			}
 
@@ -149,7 +147,6 @@ public class CarBehavior : MonoBehaviour {
 			}
 				
 			if (Vector3.Distance(transform.position, arrestingOfficer.transform.position) <= checkDistance) {
-				arresting = false;
 				currState = State.Arrested;
 			}
 
