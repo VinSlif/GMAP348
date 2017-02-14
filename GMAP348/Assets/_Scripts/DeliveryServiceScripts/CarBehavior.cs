@@ -60,7 +60,7 @@ public class CarBehavior : MonoBehaviour {
 
 		if (didCrime) {
 			crimeTimer -= Time.deltaTime;
-			if (crimeTimer <= 0) {
+			if (crimeTimer <= 0 && arrestingOfficer == null) {
 				didCrime = false;
 			}
 		} else {
