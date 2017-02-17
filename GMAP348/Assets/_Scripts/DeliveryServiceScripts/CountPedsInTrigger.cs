@@ -35,13 +35,6 @@ public class CountPedsInTrigger : MonoBehaviour {
 		if (col.gameObject.tag == gameManager.ped.tag) {
 			cross.pedsInTrigger++;
 		}
-
-		if (col.gameObject.tag == gameManager.car.tag) {
-			if (col.gameObject.GetComponent<CarBehavior>().didCrime
-			    && col.gameObject.GetComponent<CarBehavior>().arrestingOfficer == null) {
-				setBlockState = true;
-			}
-		}
 	}
 
 	void OnTriggerStay(Collider col) {
@@ -56,6 +49,13 @@ public class CountPedsInTrigger : MonoBehaviour {
 	void OnTriggerExit(Collider col) {
 		if (col.gameObject.tag == gameManager.ped.tag) {
 			cross.pedsInTrigger--;
+		}
+
+		if (col.gameObject.tag == gameManager.car.tag) {
+			if (col.gameObject.GetComponent<CarBehavior>().didCrime
+			    && col.gameObject.GetComponent<CarBehavior>().arrestingOfficer == null) {
+				setBlockState = true;
+			}
 		}
 	}
 }
