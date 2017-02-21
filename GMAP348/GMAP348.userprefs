@@ -1,8 +1,9 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\DeliveryServiceScripts\CrossWalkBehavior.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/_Scripts/FarmSim/PlantBehavior.cs">
     <Files>
-      <File FileName="Assets\_Scripts\DeliveryServiceScripts\CrossWalkBehavior.cs" Line="119" Column="13" />
+      <File FileName="Assets/_Scripts/FarmSim/Project3Player.cs" Line="60" Column="3" />
+      <File FileName="Assets/_Scripts/FarmSim/PlantBehavior.cs" Line="175" Column="55" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

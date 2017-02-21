@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlantBehavior : MonoBehaviour {
+public class PlantBehavior : PlantTypes {
 
 	public enum State {
 		Start,
@@ -14,34 +14,30 @@ public class PlantBehavior : MonoBehaviour {
 		Dead
 	}
 
-	public enum PlantType {
-		Poppy,
-		Coca,
-		Kush,
-		Psilocybin
-	}
-
 	[Serializable]
 	public class Timers {
 		[Tooltip("Time needed for stage to grow")]
 		public float growTime = 10.0f;
-		[HideInInspector]
+		//[HideInInspector]
 		public float growTimer = 0;
 
 		[Tooltip("Time for plant to decay if not watered")]
 		public float decayTime = 30.0f;
-		[HideInInspector]
+		//[HideInInspector]
 		public float decayTimer = 0;
 
 		[Tooltip("Time for plant to start decaying after being watered")]
 		public float waterTime = 30.0f;
-		[HideInInspector]
+		//[HideInInspector]
 		public float waterTimer = 0;
 	}
 
 	[Serializable]
 	public class Growth {
 		[Tooltip("The growth stage of the plant to display")]
+		public GameObject stagesParent;
+
+		//[HideInInspector]
 		public GameObject[] stages;
 
 		public void HideGrowth() {
@@ -57,18 +53,19 @@ public class PlantBehavior : MonoBehaviour {
 		}
 	}
 
+	/*
 	[Serializable]
 	public class Decay {
 		[Tooltip("Enemy plant to spawn if plant fully decays")]
 		public GameObject decayedPlant;
-		[Tooltip("Used to organize hierarchy")]
-		public GameObject holder;
 
-		public void SpawnDecayed(Transform pos) {
-			GameObject newDecayed = Instantiate(decayedPlant, pos.position, Quaternion.identity);
-			newDecayed.transform.parent = holder.transform;
+		public void SetDecay() {
+			if (!decayedPlant.activeSelf) {
+				decayedPlant.SetActive(true);
+			}
 		}
 	}
+	*/
 
 	[Serializable]
 	public class Harvest {
@@ -77,7 +74,7 @@ public class PlantBehavior : MonoBehaviour {
 		[Tooltip("The number of seeds that will spawn when harvesting")]
 		public int drops = 2;
 
-		[HideInInspector]
+		//[HideInInspector]
 		public int toDrop = 0;
 
 		public void SpawnSeeds(int needed, Transform pos, PlantType type) {
@@ -86,7 +83,7 @@ public class PlantBehavior : MonoBehaviour {
 				newSeed.GetComponent<Rigidbody>().AddForce(UnityEngine.Random.Range(-5.0f, 5.0f) * 50.0f,
 					UnityEngine.Random.Range(0, 10.0f) * 50.0f,
 					UnityEngine.Random.Range(-5.0f, 5.0f) * 50.0f);
-				newSeed.GetComponent<SeedBehavior>().type = type;
+				newSeed.GetComponent<SeedBehavior>().seedType = type;
 			}
 		}
 	}
@@ -99,13 +96,13 @@ public class PlantBehavior : MonoBehaviour {
 	public Timers timer = new Timers();
 	public Growth growth = new Growth();
 	public Harvest harvest = new Harvest();
-	public Decay decay = new Decay();
+	//public Decay decay = new Decay();
 
-	[HideInInspector]
+	//[HideInInspector]
 	public bool watered = false;
-	[HideInInspector]
+	//[HideInInspector]
 	public bool fertilized = false;
-	[HideInInspector]
+	//[HideInInspector]
 	public bool harvesting = false;
 
 
@@ -118,7 +115,13 @@ public class PlantBehavior : MonoBehaviour {
 			timer.decayTimer = timer.decayTime;
 			timer.waterTimer = timer.waterTime;
 
-			// Hide growth elements
+			// Get + Hide growth elements
+			growth.stages = new GameObject[growth.stagesParent.transform.childCount];
+			int i = 0;
+			foreach(Transform child in growth.stagesParent.transform.GetComponent<Transform>()) {
+				growth.stages[i] = child.gameObject;
+				i++;
+			}
 			growth.HideGrowth();
 
 			currState = State.Stage1;
@@ -162,16 +165,14 @@ public class PlantBehavior : MonoBehaviour {
 
 			break;
 		case State.Harvest:
-
+			
 			harvest.SpawnSeeds(harvest.toDrop, transform, type);
-
 			Destroy(gameObject);
 
 			break;
 		case State.Dead:
-
-			decay.SpawnDecayed(transform);
-			Destroy(gameObject);
+			//decay.SetDecay();
+			Debug.Log("Plant " + gameObject.name + " is dead");
 
 			break;
 		}
