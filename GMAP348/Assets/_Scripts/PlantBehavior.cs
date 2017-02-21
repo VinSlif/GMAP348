@@ -44,9 +44,17 @@ public class PlantBehavior : MonoBehaviour {
 	public bool fertilized = false;
 	[HideInInspector]
 	public bool harvesting = false;
-	
-	// Update is called once per frame
-	void Update() {
+
+    private GameObject player;
+    public int speed;
+
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
+
+    // Update is called once per frame
+    void Update() {
 		switch(currState) {
 		case State.Start:
 			timer.growTimer = timer.growTime;
@@ -107,6 +115,7 @@ public class PlantBehavior : MonoBehaviour {
 
 			break;
 		case State.Dead:
+                transform.position = Vector3.MoveTowards(transform.position, new Vector3(player.transform.position.x, player.transform.position.y - .5f, player.transform.position.z), speed * Time.deltaTime);
 			break;
 		}
 	}

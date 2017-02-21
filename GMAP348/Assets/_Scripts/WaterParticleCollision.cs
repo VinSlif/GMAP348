@@ -10,10 +10,11 @@ public class WaterParticleCollision : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Input.GetKey(KeyCode.Space)) {
+		if (Input.GetButton("Fire1")) {
 			sys.Play(true);
 		} else {
-			sys.Pause(true);
+			//sys.Pause(true);
+            sys.Stop();
 		}
 	}
 
