@@ -113,78 +113,89 @@ public class PlantBehavior : PlantTypes {
 
     // Update is called once per frame
     void Update() {
-		switch(currState) {
-		case State.Start:
-			// Set all timers
-			timer.growTimer = timer.growTime;
-			timer.decayTimer = timer.decayTime;
-			timer.waterTimer = timer.waterTime;
+        switch (currState)
+        {
+            case State.Start:
+                // Set all timers
+                timer.growTimer = timer.growTime;
+                timer.decayTimer = timer.decayTime;
+                timer.waterTimer = timer.waterTime;
 
-			// Get + Hide growth elements
-			growth.stages = new GameObject[growth.stagesParent.transform.childCount];
-			int i = 0;
-			foreach(Transform child in growth.stagesParent.transform.GetComponent<Transform>()) {
-				growth.stages[i] = child.gameObject;
-				i++;
-			}
-			growth.HideGrowth();
+                // Get + Hide growth elements
+                growth.stages = new GameObject[growth.stagesParent.transform.childCount];
+                int i = 0;
+                foreach (Transform child in growth.stagesParent.transform.GetComponent<Transform>())
+                {
+                    growth.stages[i] = child.gameObject;
+                    i++;
+                }
+                growth.HideGrowth();
 
-			currState = State.Stage1;
+                currState = State.Stage1;
+                harvesting = false;
+                break;
+            case State.Stage1:
 
-			break;
-		case State.Stage1:
+                growth.DisplayGrowth((int)currState);
 
-			growth.DisplayGrowth((int)currState);
+                if (CheckWater())
+                {
+                    CheckDecay();
+                }
+                else
+                {
+                    CheckGrowth(State.Stage2);
+                }
+                harvesting = false;
+                break;
+            case State.Stage2:
 
-			if (CheckWater()) {
-				CheckDecay();
-			} else {
-				CheckGrowth(State.Stage2);
-			}
+                growth.DisplayGrowth((int)currState);
 
-			break;
-		case State.Stage2:
+                if (CheckWater())
+                {
+                    CheckDecay();
+                }
+                else
+                {
+                    CheckGrowth(State.Full);
+                }
+                harvesting = false;
+                break;
+            case State.Full:
 
-			growth.DisplayGrowth((int)currState);
+                growth.DisplayGrowth((int)currState);
 
-			if (CheckWater()) {
-				CheckDecay();
-			} else {
-				CheckGrowth(State.Full);
-			}
+                if (fertilized)
+                {
+                    harvest.toDrop = harvest.drops * 2;
+                }
+                else
+                {
+                    harvest.toDrop = harvest.drops;
+                }
 
-			break;
-		case State.Full:
+                if (harvesting)
+                {
+                    currState = State.Harvest;
+                }
+                harvesting = false;
+                break;
+            case State.Harvest:
 
-			growth.DisplayGrowth((int)currState);
+                harvest.SpawnSeeds(harvest.toDrop, transform, type);
+                Destroy(gameObject);
 
-			if (fertilized) {
-				harvest.toDrop = harvest.drops * 2;
-			} else {
-				harvest.toDrop = harvest.drops;
-			}
-
-			if (harvesting) {
-				currState = State.Harvest;
-			}
-
-			break;
-		case State.Harvest:
-			
-			harvest.SpawnSeeds(harvest.toDrop, transform, type);
-			Destroy(gameObject);
-
-			break;
-		case State.Dead:
+                break;
+            case State.Dead:
                 //Set zombie mesh
                 gameObject.GetComponent<Collider>().isTrigger = true;
                 //Walk towards player
                 Vector3 target = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
                 transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime);
-			Debug.Log("Plant " + gameObject.name + " is dead");
-
-			break;
-		}
+                Debug.Log("Plant " + gameObject.name + " is dead");
+                break;
+        }
 	}
 
 

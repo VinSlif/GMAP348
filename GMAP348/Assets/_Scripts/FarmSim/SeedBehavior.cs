@@ -6,31 +6,54 @@ public class SeedBehavior : PlantTypes {
 
 	public PlantType seedType;
 	private Project3Player inven;
+    private GameObject player;
 
 	void Awake() {
 		inven = GameObject.FindWithTag("Player").GetComponent<Project3Player>();
-	}
+        player = GameObject.FindWithTag("Player");
+
+    }
 
 	void OnCollisionEnter(Collision col) {
-		if (col.gameObject.tag == "Player") {
+        /*if (col.gameObject.tag == "Player") {
 			Destroy(gameObject);
-		}
-	}
+		}*/
+        if (col.gameObject.tag == "Ground")
+        {
+            Debug.Log("hit ground");
+            Destroy(gameObject);
+        }
+    }
 
 	public void OnDestroy() {
-		switch(seedType) {
-		case PlantType.Coca:
-			inven.inventory.coca++;
-			break;
-		case PlantType.Kush:
-			inven.inventory.kush++;
-			break;
-		case PlantType.Poppy:
-			inven.inventory.poppy++;
-			break;
-		case PlantType.Psilocybin:
-			inven.inventory.shrooms++;
-			break;
-		}
+        GameObject newPlant = new GameObject();
+        switch (seedType)
+        {
+            case PlantType.Coca:
+                //inven.inventory.coca++;
+                newPlant = Instantiate(inven.prefab.cocaPlant,
+                                              new Vector3(transform.position.x, 0, transform.position.z + 1),
+                                              Quaternion.identity);
+                //newPlant.transform.parent = holder;
+                break;
+            case PlantType.Kush:
+                //inven.inventory.kush++;
+                newPlant = Instantiate(inven.prefab.kushPlant,
+                                              new Vector3(transform.position.x, 0, transform.position.z + 1),
+                                              Quaternion.identity);
+                break;
+            case PlantType.Poppy:
+                //inven.inventory.poppy++;
+                newPlant = Instantiate(inven.prefab.poppyPlant,
+                                              new Vector3(transform.position.x, 0, transform.position.z + 1),
+                                              Quaternion.identity);
+                break;
+            case PlantType.Psilocybin:
+                //inven.inventory.shrooms++;
+                newPlant = Instantiate(inven.prefab.shroomPlant,
+                                              new Vector3(transform.position.x, 0, transform.position.z + 1),
+                                              Quaternion.identity);
+                break;
+        }
 	}
 }
