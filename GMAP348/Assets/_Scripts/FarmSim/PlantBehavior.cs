@@ -27,7 +27,7 @@ public class PlantBehavior : PlantTypes {
 		public float decayTimer = 0;
 
 		[Tooltip("Time for plant to start decaying after being watered")]
-		public float waterTime = 30.0f;
+		public float waterTime = 15.0f;
 		//[HideInInspector]
 		public float waterTimer = 0;
 	}
@@ -90,6 +90,7 @@ public class PlantBehavior : PlantTypes {
 
 
 	private State currState = State.Start;
+    private GameObject player;
 	[Tooltip("The type of plant this is")]
 	public PlantType type = PlantType.Kush;
 
@@ -105,9 +106,13 @@ public class PlantBehavior : PlantTypes {
 	//[HideInInspector]
 	public bool harvesting = false;
 
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
 
-	// Update is called once per frame
-	void Update() {
+    // Update is called once per frame
+    void Update() {
 		switch(currState) {
 		case State.Start:
 			// Set all timers
@@ -171,7 +176,11 @@ public class PlantBehavior : PlantTypes {
 
 			break;
 		case State.Dead:
-			//decay.SetDecay();
+                //Set zombie mesh
+                gameObject.GetComponent<Collider>().isTrigger = true;
+                //Walk towards player
+                Vector3 target = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
+                transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime);
 			Debug.Log("Plant " + gameObject.name + " is dead");
 
 			break;
@@ -217,4 +226,12 @@ public class PlantBehavior : PlantTypes {
 			currState = next;
 		}
 	}
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag.Equals("Player") && currState == State.Dead )
+        {
+            Debug.Log("kill player");
+        }
+    }
 }
