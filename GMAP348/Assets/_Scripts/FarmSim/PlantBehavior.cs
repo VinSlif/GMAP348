@@ -51,6 +51,7 @@ public class PlantBehavior : PlantTypes {
             //for (int i = 0; i < growthStage; i++) {
             //	stages[i].SetActive(true);
             //}
+           
             stages[growthStage - 1].SetActive(true);
 
         }
@@ -83,9 +84,9 @@ public class PlantBehavior : PlantTypes {
 		public void SpawnSeeds(int needed, Transform pos, PlantType type) {
 			for (int i = 0; i < needed; i++) {
 				GameObject newSeed = Instantiate(seed, pos.position, Quaternion.identity);
-				newSeed.GetComponent<Rigidbody>().AddForce(UnityEngine.Random.Range(-5.0f, 5.0f) * 50.0f,
+				newSeed.GetComponent<Rigidbody>().AddForce(UnityEngine.Random.Range(-5.0f, 5.0f) * 35.0f,
 					UnityEngine.Random.Range(0, 10.0f) * 50.0f,
-					UnityEngine.Random.Range(-5.0f, 5.0f) * 50.0f);
+					UnityEngine.Random.Range(-5.0f, 5.0f) * 35.0f);
 				newSeed.GetComponent<SeedBehavior>().seedType = type;
 			}
 		}
@@ -108,6 +109,7 @@ public class PlantBehavior : PlantTypes {
 	public bool fertilized = false;
 	//[HideInInspector]
 	public bool harvesting = false;
+    public bool dead = false;
 
     private void Start()
     {
@@ -139,7 +141,7 @@ public class PlantBehavior : PlantTypes {
                 harvesting = false;
                 break;
             case State.Stage1:
-
+                Debug.Log(currState);
                 growth.DisplayGrowth((int)currState);
 
                 if (CheckWater())
@@ -153,7 +155,7 @@ public class PlantBehavior : PlantTypes {
                 harvesting = false;
                 break;
             case State.Stage2:
-
+                Debug.Log(currState);
                 growth.DisplayGrowth((int)currState);
 
                 if (CheckWater())
@@ -167,7 +169,7 @@ public class PlantBehavior : PlantTypes {
                 harvesting = false;
                 break;
             case State.Stage3:
-
+                Debug.Log(currState);
                 growth.DisplayGrowth((int)currState);
 
                 if (CheckWater())
@@ -181,12 +183,12 @@ public class PlantBehavior : PlantTypes {
                 harvesting = false;
                 break;
             case State.Full:
-
+                Debug.Log(currState + "before");
                 growth.DisplayGrowth((int)currState);
-
+                Debug.Log(currState + "after");
                 if (fertilized)
                 {
-                    harvest.toDrop = harvest.drops * 2;
+                    harvest.toDrop = harvest.drops + 1;
                 }
                 else
                 {
@@ -202,16 +204,24 @@ public class PlantBehavior : PlantTypes {
             case State.Harvest:
 
                 harvest.SpawnSeeds(harvest.toDrop, transform, type);
+                GameObject.FindGameObjectWithTag("Player").GetComponent<Project3Player>().inventory.cash += harvest.toDrop;
                 Destroy(gameObject);
 
                 break;
             case State.Dead:
+                dead = true;
                 //Set zombie mesh
                 gameObject.GetComponent<Collider>().isTrigger = true;
                 //Walk towards player
                 Vector3 target = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
+                growth.DisplayGrowth((int)currState - 1);
                 transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime);
-                Debug.Log("Plant " + gameObject.name + " is dead");
+                //Harvest if killed
+                if (harvesting)
+                {
+                    harvest.toDrop = harvest.drops + 1;
+                    currState = State.Harvest;
+                }
                 break;
         }
 	}
@@ -260,7 +270,8 @@ public class PlantBehavior : PlantTypes {
     {
         if (other.gameObject.tag.Equals("Player") && currState == State.Dead )
         {
-            Debug.Log("kill player");
+            GameObject.FindGameObjectWithTag("UI").GetComponent<UI>().alive = false;
+            GameObject.FindGameObjectWithTag("UI").GetComponent<UI>().endScreen();
         }
     }
 }

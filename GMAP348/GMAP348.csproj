@@ -104,6 +104,7 @@
     <Compile Include="Assets\_Scripts\FarmSim\PlantTypes.cs" />
     <Compile Include="Assets\_Scripts\FarmSim\Project3Player.cs" />
     <Compile Include="Assets\_Scripts\FarmSim\SeedBehavior.cs" />
+    <Compile Include="Assets\_Scripts\FarmSim\UI.cs" />
     <Compile Include="Assets\_Scripts\FarmSim\WaterParticleCollision.cs" />
     <Compile Include="Assets\_Scripts\IncreaseFOVFromGameObject.cs" />
     <Compile Include="Assets\_Scripts\LookAtGameObject.cs" />

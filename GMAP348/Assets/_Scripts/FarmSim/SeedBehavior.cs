@@ -20,9 +20,13 @@ public class SeedBehavior : PlantTypes {
 		}*/
         if (col.gameObject.tag == "Ground")
         {
-            Debug.Log("hit ground");
-            Destroy(gameObject);
+            Invoke("invokeDestroy", 2);
         }
+    }
+
+    void invokeDestroy()
+    {
+        Destroy(gameObject);
     }
 
 	public void OnDestroy() {
@@ -32,26 +36,26 @@ public class SeedBehavior : PlantTypes {
             case PlantType.Coca:
                 //inven.inventory.coca++;
                 newPlant = Instantiate(inven.prefab.cocaPlant,
-                                              new Vector3(transform.position.x, 0, transform.position.z + 1),
+                                              new Vector3(transform.position.x, 0, transform.position.z),
                                               Quaternion.identity);
                 //newPlant.transform.parent = holder;
                 break;
             case PlantType.Kush:
                 //inven.inventory.kush++;
                 newPlant = Instantiate(inven.prefab.kushPlant,
-                                              new Vector3(transform.position.x, 0, transform.position.z + 1),
+                                              new Vector3(transform.position.x, 0, transform.position.z),
                                               Quaternion.identity);
                 break;
             case PlantType.Poppy:
                 //inven.inventory.poppy++;
                 newPlant = Instantiate(inven.prefab.poppyPlant,
-                                              new Vector3(transform.position.x, 0, transform.position.z + 1),
+                                              new Vector3(transform.position.x, 0, transform.position.z),
                                               Quaternion.identity);
                 break;
             case PlantType.Psilocybin:
                 //inven.inventory.shrooms++;
                 newPlant = Instantiate(inven.prefab.shroomPlant,
-                                              new Vector3(transform.position.x, 0, transform.position.z + 1),
+                                              new Vector3(transform.position.x, 0, transform.position.z),
                                               Quaternion.identity);
                 break;
         }

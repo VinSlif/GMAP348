@@ -67,16 +67,27 @@ public class Project3Player : PlantTypes {
 					if (!hit.transform.gameObject.GetComponent<PlantBehavior>().harvesting) {
 						hit.transform.gameObject.GetComponent<PlantBehavior>().harvesting = true;
 					}
-				}
-			}
-		}
+                }
+            }
+            
+        }
 
-		public void SeedAction(GameObject plant, Transform pos, Transform holder) {
+        public void HoseAction(GameObject go)
+        {
+            go.GetComponentInChildren<ParticleSystem>().Play();
+        }
+
+        public void FertilizerAction(GameObject go)
+        {
+
+        }
+
+        public void SeedAction(GameObject plant, Transform pos, Transform holder) {
 			plantingTimer -= Time.deltaTime;
 
 			if (plantingTimer <= 0) {
 				GameObject newPlant = Instantiate(plant,
-					                      new Vector3(pos.position.x, .53f, pos.position.z + 1),
+					                      new Vector3(pos.position.x, 0, pos.position.z + 1),
 					                      Quaternion.identity);
 				newPlant.transform.parent = holder;
 				plantingTimer = plantingTime;
@@ -131,7 +142,8 @@ public class Project3Player : PlantTypes {
 				usable.ShovelAction(usable.items[0]);
 				break;
 			case 1:
-				// hose action
+                    // hose action
+                    usable.HoseAction(usable.items[1]);
 				break;
 			case 2:
 				usable.SeedAction(prefab.kushPlant, transform, holder.plants.transform);
@@ -145,7 +157,10 @@ public class Project3Player : PlantTypes {
 			case 5:
 				usable.SeedAction(prefab.shroomPlant, transform, holder.plants.transform);
 				break;
-			}
-		}
+            case 6:
+				usable.FertilizerAction(usable.items[6]);
+            break;
+        }
+    }
 	}
 }
