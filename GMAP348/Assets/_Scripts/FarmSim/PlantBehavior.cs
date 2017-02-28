@@ -9,6 +9,7 @@ public class PlantBehavior : PlantTypes {
 		Start,
 		Stage1,
 		Stage2,
+        Stage3,
 		Full,
 		Harvest,
 		Dead
@@ -47,10 +48,12 @@ public class PlantBehavior : PlantTypes {
 		}
 
 		public void DisplayGrowth(int growthStage) {
-			for (int i = 0; i < growthStage; i++) {
-				stages[i].SetActive(true);
-			}
-		}
+            //for (int i = 0; i < growthStage; i++) {
+            //	stages[i].SetActive(true);
+            //}
+            stages[growthStage - 1].SetActive(true);
+
+        }
 	}
 
 	/*
@@ -113,6 +116,7 @@ public class PlantBehavior : PlantTypes {
 
     // Update is called once per frame
     void Update() {
+        growth.HideGrowth();
         switch (currState)
         {
             case State.Start:
@@ -129,7 +133,7 @@ public class PlantBehavior : PlantTypes {
                     growth.stages[i] = child.gameObject;
                     i++;
                 }
-                growth.HideGrowth();
+                //growth.HideGrowth();
 
                 currState = State.Stage1;
                 harvesting = false;
@@ -149,6 +153,20 @@ public class PlantBehavior : PlantTypes {
                 harvesting = false;
                 break;
             case State.Stage2:
+
+                growth.DisplayGrowth((int)currState);
+
+                if (CheckWater())
+                {
+                    CheckDecay();
+                }
+                else
+                {
+                    CheckGrowth(State.Stage3);
+                }
+                harvesting = false;
+                break;
+            case State.Stage3:
 
                 growth.DisplayGrowth((int)currState);
 

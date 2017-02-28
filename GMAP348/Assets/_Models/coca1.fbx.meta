@@ -1,0 +1,143 @@
+fileFormatVersion: 2
+guid: 777c61e758ca78d4889069c933c5b674
+timeCreated: 1488260687
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Branch2
+    100002: Branch3
+    100004: //RootNode
+    100006: CocaLeaf1
+    100008: CocaLeaf2
+    100010: CocaLeaf3
+    100012: CocaLeaf4
+    100014: Stalk
+    100016: Twig1
+    100018: Twig2
+    100020: Twig3
+    100022: Twig4
+    100024: Twig5
+    100026: Twig6
+    400000: Branch2
+    400002: Branch3
+    400004: //RootNode
+    400006: CocaLeaf1
+    400008: CocaLeaf2
+    400010: CocaLeaf3
+    400012: CocaLeaf4
+    400014: Stalk
+    400016: Twig1
+    400018: Twig2
+    400020: Twig3
+    400022: Twig4
+    400024: Twig5
+    400026: Twig6
+    2300000: Branch2
+    2300002: Branch3
+    2300004: CocaLeaf1
+    2300006: CocaLeaf2
+    2300008: CocaLeaf3
+    2300010: CocaLeaf4
+    2300012: Stalk
+    2300014: Twig1
+    2300016: Twig2
+    2300018: Twig3
+    2300020: Twig4
+    2300022: Twig5
+    2300024: Twig6
+    3300000: Branch2
+    3300002: Branch3
+    3300004: CocaLeaf1
+    3300006: CocaLeaf2
+    3300008: CocaLeaf3
+    3300010: CocaLeaf4
+    3300012: Stalk
+    3300014: Twig1
+    3300016: Twig2
+    3300018: Twig3
+    3300020: Twig4
+    3300022: Twig5
+    3300024: Twig6
+    4300000: Stalk
+    4300002: Twig5
+    4300004: Twig6
+    4300006: Branch2
+    4300008: Twig3
+    4300010: CocaLeaf3
+    4300012: Twig4
+    4300014: CocaLeaf4
+    4300016: Twig2
+    4300018: CocaLeaf2
+    4300020: Twig1
+    4300022: CocaLeaf1
+    4300024: Branch3
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,183 @@
+fileFormatVersion: 2
+guid: 97df8a6a91d16274dbe9fd1f55f75aeb
+timeCreated: 1488260688
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Kush
+    100002: Kush1
+    100004: Kush2
+    100006: //RootNode
+    100008: LeafBase1
+    100010: LeafBase2
+    100012: LeafBase3
+    100014: LeafBase4
+    100016: Stalk
+    100018: Stalk1
+    100020: Stalk_Leaf1
+    100022: Stalk_Leaf10
+    100024: Stalk_Leaf11
+    100026: Stalk_Leaf12
+    100028: Stalk_Leaf2
+    100030: Stalk_Leaf3
+    100032: Stalk_Leaf4
+    100034: Stalk_Leaf5
+    100036: Stalk_Leaf6
+    100038: Stalk_Leaf7
+    100040: Stalk_Leaf8
+    100042: Stalk_Leaf9
+    400000: Kush
+    400002: Kush1
+    400004: Kush2
+    400006: //RootNode
+    400008: LeafBase1
+    400010: LeafBase2
+    400012: LeafBase3
+    400014: LeafBase4
+    400016: Stalk
+    400018: Stalk1
+    400020: Stalk_Leaf1
+    400022: Stalk_Leaf10
+    400024: Stalk_Leaf11
+    400026: Stalk_Leaf12
+    400028: Stalk_Leaf2
+    400030: Stalk_Leaf3
+    400032: Stalk_Leaf4
+    400034: Stalk_Leaf5
+    400036: Stalk_Leaf6
+    400038: Stalk_Leaf7
+    400040: Stalk_Leaf8
+    400042: Stalk_Leaf9
+    2300000: Kush
+    2300002: Kush1
+    2300004: Kush2
+    2300006: LeafBase1
+    2300008: LeafBase2
+    2300010: LeafBase3
+    2300012: LeafBase4
+    2300014: Stalk
+    2300016: Stalk1
+    2300018: Stalk_Leaf1
+    2300020: Stalk_Leaf10
+    2300022: Stalk_Leaf11
+    2300024: Stalk_Leaf12
+    2300026: Stalk_Leaf2
+    2300028: Stalk_Leaf3
+    2300030: Stalk_Leaf4
+    2300032: Stalk_Leaf5
+    2300034: Stalk_Leaf6
+    2300036: Stalk_Leaf7
+    2300038: Stalk_Leaf8
+    2300040: Stalk_Leaf9
+    3300000: Kush
+    3300002: Kush1
+    3300004: Kush2
+    3300006: LeafBase1
+    3300008: LeafBase2
+    3300010: LeafBase3
+    3300012: LeafBase4
+    3300014: Stalk
+    3300016: Stalk1
+    3300018: Stalk_Leaf1
+    3300020: Stalk_Leaf10
+    3300022: Stalk_Leaf11
+    3300024: Stalk_Leaf12
+    3300026: Stalk_Leaf2
+    3300028: Stalk_Leaf3
+    3300030: Stalk_Leaf4
+    3300032: Stalk_Leaf5
+    3300034: Stalk_Leaf6
+    3300036: Stalk_Leaf7
+    3300038: Stalk_Leaf8
+    3300040: Stalk_Leaf9
+    4300000: Stalk_Leaf4
+    4300002: Stalk_Leaf3
+    4300004: Stalk_Leaf2
+    4300006: Stalk_Leaf1
+    4300008: Stalk
+    4300010: Kush
+    4300012: LeafBase1
+    4300014: LeafBase2
+    4300016: Stalk_Leaf5
+    4300018: Stalk_Leaf6
+    4300020: Stalk_Leaf7
+    4300022: Stalk_Leaf8
+    4300024: Kush1
+    4300026: Stalk1
+    4300028: Stalk_Leaf9
+    4300030: Stalk_Leaf10
+    4300032: Stalk_Leaf11
+    4300034: Kush2
+    4300036: Stalk_Leaf12
+    4300038: LeafBase3
+    4300040: LeafBase4
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

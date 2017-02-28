@@ -1,0 +1,223 @@
+fileFormatVersion: 2
+guid: 6863d5cf439bc63498514090e5dcc3d1
+timeCreated: 1488260687
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Branch2
+    100002: Branch3
+    100004: //RootNode
+    100006: CocaLeaf1
+    100008: CocaLeaf10
+    100010: CocaLeaf11
+    100012: CocaLeaf12
+    100014: CocaLeaf2
+    100016: CocaLeaf3
+    100018: CocaLeaf4
+    100020: CocaLeaf5
+    100022: CocaLeaf6
+    100024: CocaLeaf7
+    100026: CocaLeaf8
+    100028: CocaLeaf9
+    100030: Stalk
+    100032: Twig1
+    100034: Twig10
+    100036: Twig11
+    100038: Twig12
+    100040: Twig13
+    100042: Twig14
+    100044: Twig2
+    100046: Twig3
+    100048: Twig4
+    100050: Twig5
+    100052: Twig6
+    100054: Twig7
+    100056: Twig8
+    100058: Twig9
+    400000: Branch2
+    400002: Branch3
+    400004: //RootNode
+    400006: CocaLeaf1
+    400008: CocaLeaf10
+    400010: CocaLeaf11
+    400012: CocaLeaf12
+    400014: CocaLeaf2
+    400016: CocaLeaf3
+    400018: CocaLeaf4
+    400020: CocaLeaf5
+    400022: CocaLeaf6
+    400024: CocaLeaf7
+    400026: CocaLeaf8
+    400028: CocaLeaf9
+    400030: Stalk
+    400032: Twig1
+    400034: Twig10
+    400036: Twig11
+    400038: Twig12
+    400040: Twig13
+    400042: Twig14
+    400044: Twig2
+    400046: Twig3
+    400048: Twig4
+    400050: Twig5
+    400052: Twig6
+    400054: Twig7
+    400056: Twig8
+    400058: Twig9
+    2300000: Branch2
+    2300002: Branch3
+    2300004: CocaLeaf1
+    2300006: CocaLeaf10
+    2300008: CocaLeaf11
+    2300010: CocaLeaf12
+    2300012: CocaLeaf2
+    2300014: CocaLeaf3
+    2300016: CocaLeaf4
+    2300018: CocaLeaf5
+    2300020: CocaLeaf6
+    2300022: CocaLeaf7
+    2300024: CocaLeaf8
+    2300026: CocaLeaf9
+    2300028: Stalk
+    2300030: Twig1
+    2300032: Twig10
+    2300034: Twig11
+    2300036: Twig12
+    2300038: Twig13
+    2300040: Twig14
+    2300042: Twig2
+    2300044: Twig3
+    2300046: Twig4
+    2300048: Twig5
+    2300050: Twig6
+    2300052: Twig7
+    2300054: Twig8
+    2300056: Twig9
+    3300000: Branch2
+    3300002: Branch3
+    3300004: CocaLeaf1
+    3300006: CocaLeaf10
+    3300008: CocaLeaf11
+    3300010: CocaLeaf12
+    3300012: CocaLeaf2
+    3300014: CocaLeaf3
+    3300016: CocaLeaf4
+    3300018: CocaLeaf5
+    3300020: CocaLeaf6
+    3300022: CocaLeaf7
+    3300024: CocaLeaf8
+    3300026: CocaLeaf9
+    3300028: Stalk
+    3300030: Twig1
+    3300032: Twig10
+    3300034: Twig11
+    3300036: Twig12
+    3300038: Twig13
+    3300040: Twig14
+    3300042: Twig2
+    3300044: Twig3
+    3300046: Twig4
+    3300048: Twig5
+    3300050: Twig6
+    3300052: Twig7
+    3300054: Twig8
+    3300056: Twig9
+    4300000: Stalk
+    4300002: Twig5
+    4300004: Twig6
+    4300006: Branch2
+    4300008: Twig3
+    4300010: CocaLeaf3
+    4300012: Twig4
+    4300014: CocaLeaf4
+    4300016: Twig2
+    4300018: CocaLeaf2
+    4300020: Twig1
+    4300022: CocaLeaf1
+    4300024: Branch3
+    4300026: CocaLeaf5
+    4300028: Twig7
+    4300030: Twig8
+    4300032: CocaLeaf6
+    4300034: CocaLeaf7
+    4300036: Twig9
+    4300038: CocaLeaf8
+    4300040: Twig10
+    4300042: CocaLeaf9
+    4300044: Twig11
+    4300046: CocaLeaf10
+    4300048: Twig12
+    4300050: Twig13
+    4300052: CocaLeaf11
+    4300054: CocaLeaf12
+    4300056: Twig14
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

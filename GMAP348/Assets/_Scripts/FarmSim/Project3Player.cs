@@ -20,14 +20,14 @@ public class Project3Player : PlantTypes {
 		public void SelectItem() {
 			float scrolling = Input.GetAxis("Mouse ScrollWheel");
 			if (scrolling > 0) {
-				if (activeItem > items.Length - 1) {
+				if (activeItem >= items.Length - 1) {
 					activeItem = 0;
 				} else {
 					activeItem++;
 				}
 
 			} else if (scrolling < 0) {
-				if (activeItem < 0) {
+				if (activeItem <= 0) {
 					activeItem = items.Length - 1;
 				} else {
 					activeItem--;
