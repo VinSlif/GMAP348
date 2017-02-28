@@ -3,61 +3,94 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SeedBehavior : PlantTypes {
+	[System.Serializable]
+	public class SeedMesh {
+		public GameObject kush;
+		public GameObject coca;
+		public GameObject poppy;
+		public GameObject shroom;
 
+		public void Hide() {
+			kush.SetActive(false);
+			coca.SetActive(false);
+			poppy.SetActive(false);
+			shroom.SetActive(false);
+		}
+
+		public void Display(PlantType type) {
+			switch(type) {
+			case PlantType.Coca:
+				coca.SetActive(true);
+				break;
+			case PlantType.Kush:
+				kush.SetActive(true);
+				break;
+			case PlantType.Poppy:
+				poppy.SetActive(true);
+				break;
+			case PlantType.Psilocybin:
+				shroom.SetActive(true);
+				break;
+			}
+		}
+	}
+
+	public SeedMesh mesh = new SeedMesh();
 	public PlantType seedType;
+
+	private Project3GameManager manager;
+
 	private Project3Player inven;
-    private GameObject player;
+	//[HideInInspector]
+	public GameObject player;
+	//[HideInInspector]
+	public bool playerSpawned = false;
 
-	void Awake() {
+	void Start() {
 		inven = GameObject.FindWithTag("Player").GetComponent<Project3Player>();
-        player = GameObject.FindWithTag("Player");
+		manager = GameObject.FindWithTag("ManagerTag").GetComponent<Project3GameManager>();
 
-    }
+		mesh.Hide();
+		mesh.Display(seedType);
+
+		if (player != null) {
+			playerSpawned = true;
+			Physics.IgnoreCollision(GetComponent<Collider>(), player.GetComponent<Collider>());
+		}
+	}
+
+	void Update() {
+		if (seedType == PlantType.None) {
+			Destroy(gameObject);
+		}
+	}
 
 	void OnCollisionEnter(Collision col) {
-        /*if (col.gameObject.tag == "Player") {
+		if (col.gameObject.tag == "Player" && !playerSpawned) {
+			switch(seedType) {
+			case PlantType.Coca:
+				inven.inventory.coca++;
+				break;
+			case PlantType.Kush:
+				inven.inventory.kush++;
+				break;
+			case PlantType.Poppy:
+				inven.inventory.poppy++;
+				break;
+			case PlantType.Psilocybin:
+				inven.inventory.shrooms++;
+				break;
+			}
 			Destroy(gameObject);
-		}*/
-        if (col.gameObject.tag == "Ground")
-        {
-            Invoke("invokeDestroy", 2);
-        }
-    }
+		}
 
-    void invokeDestroy()
-    {
-        Destroy(gameObject);
-    }
-
-	public void OnDestroy() {
-        GameObject newPlant = new GameObject();
-        switch (seedType)
-        {
-            case PlantType.Coca:
-                //inven.inventory.coca++;
-                newPlant = Instantiate(inven.prefab.cocaPlant,
-                                              new Vector3(transform.position.x, 0, transform.position.z),
-                                              Quaternion.identity);
-                //newPlant.transform.parent = holder;
-                break;
-            case PlantType.Kush:
-                //inven.inventory.kush++;
-                newPlant = Instantiate(inven.prefab.kushPlant,
-                                              new Vector3(transform.position.x, 0, transform.position.z),
-                                              Quaternion.identity);
-                break;
-            case PlantType.Poppy:
-                //inven.inventory.poppy++;
-                newPlant = Instantiate(inven.prefab.poppyPlant,
-                                              new Vector3(transform.position.x, 0, transform.position.z),
-                                              Quaternion.identity);
-                break;
-            case PlantType.Psilocybin:
-                //inven.inventory.shrooms++;
-                newPlant = Instantiate(inven.prefab.shroomPlant,
-                                              new Vector3(transform.position.x, 0, transform.position.z),
-                                              Quaternion.identity);
-                break;
-        }
+		if (col.gameObject.tag == "Ground" && playerSpawned) {
+			GameObject getPlant = manager.plants.GetPlantGameObject(seedType);
+			if (getPlant != null) {
+				GameObject newPlant = Instantiate(getPlant, transform.position, Quaternion.identity);
+				newPlant.transform.parent = transform.parent.transform;
+			}
+			Destroy(gameObject);
+		}
 	}
 }

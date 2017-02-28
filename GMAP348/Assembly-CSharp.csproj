@@ -46,7 +46,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\_Scripts\BackAndForth.cs" />
      <Compile Include="Assets\_Scripts\DeliveryServiceScripts\BlockBehavior.cs" />
      <Compile Include="Assets\_Scripts\DeliveryServiceScripts\CarBehavior.cs" />
      <Compile Include="Assets\_Scripts\DeliveryServiceScripts\CopBehavior.cs" />
@@ -65,18 +64,21 @@
      <Compile Include="Assets\_Scripts\DeliveryServiceScripts\RoadBlockBehavior.cs" />
      <Compile Include="Assets\_Scripts\DeliveryServiceScripts\TopDownPlayerController.cs" />
      <Compile Include="Assets\_Scripts\DeliveryServiceScripts\WasHit.cs" />
+     <Compile Include="Assets\_Scripts\FarmSim\DeductHealthOnCol.cs" />
      <Compile Include="Assets\_Scripts\FarmSim\PlantBehavior.cs" />
      <Compile Include="Assets\_Scripts\FarmSim\PlantTypes.cs" />
+     <Compile Include="Assets\_Scripts\FarmSim\Project3GameManager.cs" />
      <Compile Include="Assets\_Scripts\FarmSim\Project3Player.cs" />
      <Compile Include="Assets\_Scripts\FarmSim\SeedBehavior.cs" />
      <Compile Include="Assets\_Scripts\FarmSim\WaterParticleCollision.cs" />
-     <Compile Include="Assets\_Scripts\IncreaseFOVFromGameObject.cs" />
      <Compile Include="Assets\_Scripts\LookAtGameObject.cs" />
-     <Compile Include="Assets\_Scripts\ModifiedRigidbodyFirstPersonController.cs" />
      <Compile Include="Assets\_Scripts\MoveGameObjectUpAndDown.cs" />
-     <Compile Include="Assets\_Scripts\MoveInDirection.cs" />
      <Compile Include="Assets\_Scripts\MoveTo.cs" />
-     <Compile Include="Assets\_Scripts\RestartOnCollision.cs" />
+     <Compile Include="Assets\_Scripts\Project0\BackAndForth.cs" />
+     <Compile Include="Assets\_Scripts\Project0\IncreaseFOVFromGameObject.cs" />
+     <Compile Include="Assets\_Scripts\Project0\ModifiedRigidbodyFirstPersonController.cs" />
+     <Compile Include="Assets\_Scripts\Project0\MoveInDirection.cs" />
+     <Compile Include="Assets\_Scripts\Project0\RestartOnCollision.cs" />
      <Compile Include="Assets\_Scripts\RotateGameObject.cs" />
      <None Include="Assets\_Textures\_Shaders\CustomShader.shader" />
      <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />

@@ -1,33 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Project3Player : PlantTypes {
 
 	[System.Serializable]
 	public class UsableItems {
-
 		public GameObject[] items;
 
-		//[HideInInspector]
+		[HideInInspector]
 		public int activeItem = 0;
-
-		//[HideInInspector]
-		public float plantingTime = 0.20f;
-		//[HideInInspector]
-		public float plantingTimer = 0;
 
 		public void SelectItem() {
 			float scrolling = Input.GetAxis("Mouse ScrollWheel");
 			if (scrolling > 0) {
-				if (activeItem >= items.Length - 1) {
+				if (activeItem > items.Length - 1) {
 					activeItem = 0;
 				} else {
 					activeItem++;
 				}
 
 			} else if (scrolling < 0) {
-				if (activeItem <= 0) {
+				if (activeItem < 0) {
 					activeItem = items.Length - 1;
 				} else {
 					activeItem--;
@@ -42,57 +37,33 @@ public class Project3Player : PlantTypes {
 				activeItem = 2;
 			} else if (Input.GetKey(KeyCode.Alpha4)) {
 				activeItem = 3;
-			} else if (Input.GetKey(KeyCode.Alpha5)) {
-				activeItem = 4;
-			} else if (Input.GetKey(KeyCode.Alpha6)) {
-				activeItem = 5;
 			}
 
 			ActivateItem(activeItem);
 		}
 
 		public void ActivateItem(int index) {
+			// Deactivate all items
 			for (int i = 0; i < items.Length; i++) {
 				items[i].SetActive(false);
 			}
+			// Activate selected item
 			items[index].SetActive(true);
+
 		}
+	}
 
-		public void ShovelAction(GameObject go) {
-			Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward, Color.red);
+	[System.Serializable]
+	public class ItemActions {
+		public GameObject seed;
 
-			RaycastHit hit;
-			if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 2)) {
-				if (hit.transform.tag == "Plant") {
-					if (!hit.transform.gameObject.GetComponent<PlantBehavior>().harvesting) {
-						hit.transform.gameObject.GetComponent<PlantBehavior>().harvesting = true;
-					}
-                }
-            }
-            
-        }
+		//[HideInInspector]
+		public float plantingTime = 0.20f;
+		//[HideInInspector]
+		public float plantingTimer = 0;
 
-        public void HoseAction(GameObject go)
-        {
-            go.GetComponentInChildren<ParticleSystem>().Play();
-        }
-
-        public void FertilizerAction(GameObject go)
-        {
-
-        }
-
-        public void SeedAction(GameObject plant, Transform pos, Transform holder) {
-			plantingTimer -= Time.deltaTime;
-
-			if (plantingTimer <= 0) {
-				GameObject newPlant = Instantiate(plant,
-					                      new Vector3(pos.position.x, 0, pos.position.z + 1),
-					                      Quaternion.identity);
-				newPlant.transform.parent = holder;
-				plantingTimer = plantingTime;
-			}
-		}
+		public float startRot = 90.0f;
+		public float endRot = -65.0f;
 	}
 
 	[System.Serializable]
@@ -103,64 +74,98 @@ public class Project3Player : PlantTypes {
 		public int poppy = 0;
 		public int coca = 0;
 		public int shrooms = 0;
+
+		public PlantType GetSeed() {
+			PlantType getType;
+			if (kush > 0) {
+				kush--;
+				getType = PlantType.Kush;
+			} else if (poppy > 0) {
+				poppy--;
+				getType = PlantType.Poppy;
+			} else if (coca > 0) {
+				coca--;
+				getType = PlantType.Coca;
+			} else if (shrooms > 0) {
+				shrooms--;
+				getType = PlantType.Psilocybin;
+			} else {
+				getType = PlantType.None;
+			}
+			return getType;
+		}
 	}
 
 	[System.Serializable]
-	public class Prefabs {
-		public GameObject kushPlant;
-		public GameObject poppyPlant;
-		public GameObject cocaPlant;
-		public GameObject shroomPlant;
+	public class Health {
+		public float hp = 100.0f;
+		[HideInInspector]
+		public float maxHealth;
+
+		public Slider hpSlider;
+
+		public void UpdateSlider() {
+			hpSlider.value = hp / maxHealth;
+		}
 	}
 
-	[System.Serializable]
-	public class Holders {
-		public GameObject plants;
-		public GameObject enemies;
-	}
 
-
-	public Prefabs prefab = new Prefabs();
-	public Holders holder = new Holders();
 	public UsableItems usable = new UsableItems();
+	public ItemActions action = new ItemActions();
+	public Health health = new Health();
 	public Inventory inventory = new Inventory();
 
-	// Use this for initialization
+	private Project3GameManager manager;
+
+
 	void Start() {
-		usable.ActivateItem(usable.activeItem);
+		manager = GameObject.FindWithTag("ManagerTag").GetComponent<Project3GameManager>();
+
+		health.maxHealth = health.hp;
+		health.UpdateSlider();
 	}
-	
+
 	// Update is called once per frame
 	void Update() {
 		// Get item
 		usable.SelectItem();
+		health.UpdateSlider();
+
+		action.plantingTimer -= Time.deltaTime;
 
 		// Use item
 		if (Input.GetButton("Fire1")) {
 			switch(usable.activeItem) {
+			// shovel action
 			case 0:
-				usable.ShovelAction(usable.items[0]);
+				RaycastHit hit;
+				if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 4)) {
+					if (hit.transform.tag == "Plant") {
+						hit.transform.gameObject.GetComponent<PlantBehavior>().health -= 1.0f;
+					}
+				}
+
 				break;
+			// hose action
 			case 1:
-                    // hose action
-                    usable.HoseAction(usable.items[1]);
 				break;
+			// fertilizer action
 			case 2:
-				usable.SeedAction(prefab.kushPlant, transform, holder.plants.transform);
+
 				break;
+			// seed action
 			case 3:
-				usable.SeedAction(prefab.cocaPlant, transform, holder.plants.transform);
+				if (action.plantingTimer <= 0) {
+					GameObject newSeed = Instantiate(action.seed,
+						                     new Vector3(transform.position.x, 0.53f, transform.position.z + 1),
+						                     Quaternion.identity);
+					newSeed.GetComponent<SeedBehavior>().seedType = inventory.GetSeed();
+					newSeed.GetComponent<SeedBehavior>().player = gameObject;
+					newSeed.transform.parent = manager.plants.holder.transform;
+					action.plantingTimer = action.plantingTime;
+				}
 				break;
-			case 4:
-				usable.SeedAction(prefab.poppyPlant, transform, holder.plants.transform);
-				break;
-			case 5:
-				usable.SeedAction(prefab.shroomPlant, transform, holder.plants.transform);
-				break;
-            case 6:
-				usable.FertilizerAction(usable.items[6]);
-            break;
-        }
-    }
+			}
+		}
 	}
 }

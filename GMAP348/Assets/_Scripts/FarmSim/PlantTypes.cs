@@ -7,6 +7,7 @@ public class PlantTypes : MonoBehaviour {
 		Poppy,
 		Coca,
 		Kush,
-		Psilocybin
+		Psilocybin,
+		None
 	}
 }

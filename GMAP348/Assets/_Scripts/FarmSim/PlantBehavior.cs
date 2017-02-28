@@ -9,7 +9,6 @@ public class PlantBehavior : PlantTypes {
 		Start,
 		Stage1,
 		Stage2,
-        Stage3,
 		Full,
 		Harvest,
 		Dead
@@ -28,7 +27,7 @@ public class PlantBehavior : PlantTypes {
 		public float decayTimer = 0;
 
 		[Tooltip("Time for plant to start decaying after being watered")]
-		public float waterTime = 15.0f;
+		public float waterTime = 30.0f;
 		//[HideInInspector]
 		public float waterTimer = 0;
 	}
@@ -38,38 +37,26 @@ public class PlantBehavior : PlantTypes {
 		[Tooltip("The growth stage of the plant to display")]
 		public GameObject stagesParent;
 
-		//[HideInInspector]
+		[HideInInspector]
 		public GameObject[] stages;
 
-		public void HideGrowth() {
-			for (int i = 0; i < stages.Length; i++) {
+		public void SetInitGrowth() {
+			stages = new GameObject[stagesParent.transform.childCount];
+			int i = 0;
+			foreach(Transform child in stagesParent.transform) {
+				stages[i] = child.gameObject;
 				stages[i].SetActive(false);
+				i++;
 			}
 		}
 
 		public void DisplayGrowth(int growthStage) {
-            //for (int i = 0; i < growthStage; i++) {
-            //	stages[i].SetActive(true);
-            //}
-           
-            stages[growthStage - 1].SetActive(true);
-
-        }
-	}
-
-	/*
-	[Serializable]
-	public class Decay {
-		[Tooltip("Enemy plant to spawn if plant fully decays")]
-		public GameObject decayedPlant;
-
-		public void SetDecay() {
-			if (!decayedPlant.activeSelf) {
-				decayedPlant.SetActive(true);
+			for (int i = 0; i < stages.Length; i++) {
+				stages[i].SetActive(false);
 			}
+			stages[growthStage].SetActive(true);
 		}
 	}
-	*/
 
 	[Serializable]
 	public class Harvest {
@@ -78,15 +65,15 @@ public class PlantBehavior : PlantTypes {
 		[Tooltip("The number of seeds that will spawn when harvesting")]
 		public int drops = 2;
 
-		//[HideInInspector]
+		[HideInInspector]
 		public int toDrop = 0;
 
 		public void SpawnSeeds(int needed, Transform pos, PlantType type) {
 			for (int i = 0; i < needed; i++) {
 				GameObject newSeed = Instantiate(seed, pos.position, Quaternion.identity);
-				newSeed.GetComponent<Rigidbody>().AddForce(UnityEngine.Random.Range(-5.0f, 5.0f) * 35.0f,
+				newSeed.GetComponent<Rigidbody>().AddForce(UnityEngine.Random.Range(-2.0f, 2.0f) * 50.0f,
 					UnityEngine.Random.Range(0, 10.0f) * 50.0f,
-					UnityEngine.Random.Range(-5.0f, 5.0f) * 35.0f);
+					UnityEngine.Random.Range(-2.0f, 2.0f) * 50.0f);
 				newSeed.GetComponent<SeedBehavior>().seedType = type;
 			}
 		}
@@ -94,138 +81,109 @@ public class PlantBehavior : PlantTypes {
 
 
 	private State currState = State.Start;
-    private GameObject player;
 	[Tooltip("The type of plant this is")]
-	public PlantType type = PlantType.Kush;
+	public PlantType type = PlantType.None;
+
+	public float health = 1.0f;
+	private bool deadHealthSet = false;
 
 	public Timers timer = new Timers();
 	public Growth growth = new Growth();
 	public Harvest harvest = new Harvest();
-	//public Decay decay = new Decay();
 
 	//[HideInInspector]
 	public bool watered = false;
 	//[HideInInspector]
 	public bool fertilized = false;
 	//[HideInInspector]
-	public bool harvesting = false;
-    public bool dead = false;
+	public bool dropFertilizer = false;
 
-    private void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-    }
+	private GameObject player;
+	private float speed = 5.0f;
 
-    // Update is called once per frame
-    void Update() {
-        growth.HideGrowth();
-        switch (currState)
-        {
-            case State.Start:
-                // Set all timers
-                timer.growTimer = timer.growTime;
-                timer.decayTimer = timer.decayTime;
-                timer.waterTimer = timer.waterTime;
 
-                // Get + Hide growth elements
-                growth.stages = new GameObject[growth.stagesParent.transform.childCount];
-                int i = 0;
-                foreach (Transform child in growth.stagesParent.transform.GetComponent<Transform>())
-                {
-                    growth.stages[i] = child.gameObject;
-                    i++;
-                }
-                //growth.HideGrowth();
-
-                currState = State.Stage1;
-                harvesting = false;
-                break;
-            case State.Stage1:
-                Debug.Log(currState);
-                growth.DisplayGrowth((int)currState);
-
-                if (CheckWater())
-                {
-                    CheckDecay();
-                }
-                else
-                {
-                    CheckGrowth(State.Stage2);
-                }
-                harvesting = false;
-                break;
-            case State.Stage2:
-                Debug.Log(currState);
-                growth.DisplayGrowth((int)currState);
-
-                if (CheckWater())
-                {
-                    CheckDecay();
-                }
-                else
-                {
-                    CheckGrowth(State.Stage3);
-                }
-                harvesting = false;
-                break;
-            case State.Stage3:
-                Debug.Log(currState);
-                growth.DisplayGrowth((int)currState);
-
-                if (CheckWater())
-                {
-                    CheckDecay();
-                }
-                else
-                {
-                    CheckGrowth(State.Full);
-                }
-                harvesting = false;
-                break;
-            case State.Full:
-                Debug.Log(currState + "before");
-                growth.DisplayGrowth((int)currState);
-                Debug.Log(currState + "after");
-                if (fertilized)
-                {
-                    harvest.toDrop = harvest.drops + 1;
-                }
-                else
-                {
-                    harvest.toDrop = harvest.drops;
-                }
-
-                if (harvesting)
-                {
-                    currState = State.Harvest;
-                }
-                harvesting = false;
-                break;
-            case State.Harvest:
-
-                harvest.SpawnSeeds(harvest.toDrop, transform, type);
-                GameObject.FindGameObjectWithTag("Player").GetComponent<Project3Player>().inventory.cash += harvest.toDrop;
-                Destroy(gameObject);
-
-                break;
-            case State.Dead:
-                dead = true;
-                //Set zombie mesh
-                gameObject.GetComponent<Collider>().isTrigger = true;
-                //Walk towards player
-                Vector3 target = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
-                growth.DisplayGrowth((int)currState - 1);
-                transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime);
-                //Harvest if killed
-                if (harvesting)
-                {
-                    harvest.toDrop = harvest.drops + 1;
-                    currState = State.Harvest;
-                }
-                break;
-        }
+	void Start() {
+		player = GameObject.FindWithTag("Player");
 	}
 
+	// Update is called once per frame
+	void Update() {
+		if (type == PlantType.None) {
+			Destroy(gameObject);
+		}
+
+		if (health <= 0) {
+			currState = State.Harvest;
+		}
+
+		switch(currState) {
+		case State.Start:
+			// Set all timers
+			timer.growTimer = timer.growTime;
+			timer.decayTimer = timer.decayTime;
+			timer.waterTimer = timer.waterTime;
+
+			// Get + Hide growth elements
+			growth.SetInitGrowth();
+			growth.DisplayGrowth((int)currState);
+
+			currState = State.Stage1;
+
+			break;
+		case State.Stage1:
+			growth.DisplayGrowth((int)currState);
+
+			if (CheckWater()) {
+				CheckDecay();
+			} else {
+				CheckGrowth(State.Stage2);
+			}
+
+			break;
+		case State.Stage2:
+			growth.DisplayGrowth((int)currState);
+
+			if (CheckWater()) {
+				CheckDecay();
+			} else {
+				CheckGrowth(State.Full);
+			}
+
+			break;
+		case State.Full:
+			growth.DisplayGrowth((int)currState);
+
+			if (fertilized) {
+				harvest.toDrop = harvest.drops * 2;
+			} else {
+				harvest.toDrop = harvest.drops;
+			}
+
+			break;
+		case State.Dead:
+			if (!deadHealthSet) {
+				health *= 10.0f;
+				dropFertilizer = true;
+			}
+
+			transform.position = Vector3.MoveTowards(transform.position,
+				player.transform.position,
+				speed * Time.deltaTime);
+
+			break;
+		case State.Harvest:
+			harvest.SpawnSeeds(harvest.toDrop, transform, type);
+			Destroy(gameObject);
+
+			break;
+		}
+	}
+
+	void OnCollisionEnter(Collision col) {
+		if (col.gameObject == player && currState == State.Dead) {
+			player.GetComponent<Project3Player>().health.hp -= 1.0f;
+		}
+	}
 
 	// Determines if plant should be decaying
 	bool CheckWater() {
@@ -265,13 +223,4 @@ public class PlantBehavior : PlantTypes {
 			currState = next;
 		}
 	}
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag.Equals("Player") && currState == State.Dead )
-        {
-            GameObject.FindGameObjectWithTag("UI").GetComponent<UI>().alive = false;
-            GameObject.FindGameObjectWithTag("UI").GetComponent<UI>().endScreen();
-        }
-    }
 }
