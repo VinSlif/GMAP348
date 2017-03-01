@@ -62,8 +62,9 @@ public class Project3Player : PlantTypes {
 		//[HideInInspector]
 		public float plantingTimer = 0;
 
-		public float startRot = 90.0f;
-		public float endRot = -65.0f;
+		public Animator shovelAnim;
+		[HideInInspector]
+		public bool isSwinging = false;
 	}
 
 	[System.Serializable]
@@ -138,6 +139,7 @@ public class Project3Player : PlantTypes {
 			switch(usable.activeItem) {
 			// shovel action
 			case 0:
+				action.isSwinging = true;
 				RaycastHit hit;
 				if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 4)) {
 					if (hit.transform.tag == "Plant") {
@@ -167,5 +169,10 @@ public class Project3Player : PlantTypes {
 				break;
 			}
 		}
+
+		if (usable.items[0].activeSelf) {
+			action.shovelAnim.SetBool("swing", action.isSwinging);
+		}
+		action.isSwinging = false;
 	}
 }

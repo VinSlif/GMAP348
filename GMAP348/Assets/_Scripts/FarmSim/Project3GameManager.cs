@@ -38,7 +38,6 @@ public class Project3GameManager : PlantTypes {
 	[System.Serializable]
 	public class Player {
 		public GameObject go;
-
 		public Text gameOverText;
 
 		public void CheckHealth() {
@@ -95,6 +94,6 @@ public class Project3GameManager : PlantTypes {
 	
 	// Update is called once per frame
 	void Update() {
-		
+		player.CheckHealth();
 	}
 }

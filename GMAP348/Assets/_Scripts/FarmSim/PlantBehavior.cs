@@ -87,6 +87,8 @@ public class PlantBehavior : PlantTypes {
 	public float health = 1.0f;
 	private bool deadHealthSet = false;
 
+	public int worth = 5;
+
 	public Timers timer = new Timers();
 	public Growth growth = new Growth();
 	public Harvest harvest = new Harvest();
@@ -164,6 +166,7 @@ public class PlantBehavior : PlantTypes {
 			if (!deadHealthSet) {
 				health *= 10.0f;
 				dropFertilizer = true;
+				deadHealthSet = true;
 			}
 
 			transform.position = Vector3.MoveTowards(transform.position,
@@ -173,6 +176,8 @@ public class PlantBehavior : PlantTypes {
 			break;
 		case State.Harvest:
 			harvest.SpawnSeeds(harvest.toDrop, transform, type);
+			player.GetComponent<Project3Player>().inventory.cash += worth;
+
 			Destroy(gameObject);
 
 			break;
