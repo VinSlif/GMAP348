@@ -80,6 +80,12 @@
      <Compile Include="Assets\_Scripts\Project0\MoveInDirection.cs" />
      <Compile Include="Assets\_Scripts\Project0\RestartOnCollision.cs" />
      <Compile Include="Assets\_Scripts\RotateGameObject.cs" />
+     <Compile Include="Assets\_Scripts\TextAdventure\ItemList.cs" />
+     <Compile Include="Assets\_Scripts\TextAdventure\LocationManager.cs" />
+     <Compile Include="Assets\_Scripts\TextAdventure\Project4GameManager.cs" />
+     <Compile Include="Assets\_Scripts\TextAdventure\TextAdventureClass.cs" />
+     <Compile Include="Assets\_Scripts\TextAdventure\TextAdventureItem.cs" />
+     <Compile Include="Assets\_Scripts\TextAdventure\WordLibrary.cs" />
      <None Include="Assets\_Textures\_Shaders\CustomShader.shader" />
      <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
      <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
