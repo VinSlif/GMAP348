@@ -1,11 +1,11 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMAP348", "Assembly-CSharp-firstpass.csproj", "{5E0E5082-5DF0-40DE-74C8-24E33123FBA7}"
+# Visual Studio 2008
+
+Project("{5A90230B-6D45-B814-FE55-EE0EF8AB924D}") = "GMAP348", "Assembly-CSharp-firstpass.csproj", "{5E0E5082-5DF0-40DE-74C8-24E33123FBA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMAP348", "Assembly-CSharp.csproj", "{9C191FE4-7425-37D5-4856-9444D782CFEA}"
+Project("{5A90230B-6D45-B814-FE55-EE0EF8AB924D}") = "GMAP348", "Assembly-CSharp.csproj", "{9C191FE4-7425-37D5-4856-9444D782CFEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMAP348", "Assembly-CSharp-Editor-firstpass.csproj", "{76BAE67B-14D7-9825-3EF6-1397683B39E0}"
+Project("{5A90230B-6D45-B814-FE55-EE0EF8AB924D}") = "GMAP348", "Assembly-CSharp-Editor-firstpass.csproj", "{76BAE67B-14D7-9825-3EF6-1397683B39E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
