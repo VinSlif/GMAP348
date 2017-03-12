@@ -2,29 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class LocationManager : StateMachineBehaviour {
+
+	[Header("Location Information")]
 	public string locationName;
-	[TextArea()]
+
+	[Tooltip("General description of the location\nused everytime the location is visited")]
+	[TextArea(5, 20)]
 	public string description;
-	public List<GameObject> items;
 
-	[Header("Use this to update")]
-	[Range(0, 1)]
-	public int slider;
+	[Header("Location Content")]
+	[Tooltip("Must be the exact spelling of an item")]
+	public List<string> items;
 
-	void Start() {
-		locationName = name;
-	}
+	[Tooltip("Must be the exact spelling of a person")]
+	public List<string> people;
 
-	void OnValidate() {
-		locationName = name;
-	}
+	[HideInInspector]
+	public bool isEnabled = false;
 
 	// OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-	//override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	//
-	//}
+	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+		base.OnStateEnter(animator, stateInfo, layerIndex);
+		isEnabled = true;
+		animator.SetInteger("Direction", 0);
+	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	//override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
@@ -32,9 +34,10 @@ public class LocationManager : StateMachineBehaviour {
 	//}
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-	//override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	//
-	//}
+	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+		isEnabled = false;
+		base.OnStateExit(animator, stateInfo, layerIndex);
+	}
 
 	// OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here
 	//override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {

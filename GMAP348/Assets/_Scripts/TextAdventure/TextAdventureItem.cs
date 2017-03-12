@@ -2,22 +2,17 @@
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class TextAdventureItem : MonoBehaviour {
-	public enum Type {
-		Weapon,
-		Clue,
-		Misc,
-		NotItem
-	}
+public class TextAdventureItem : TextAdventureEnums {
 
 	public string itemName;
-	public Type type;
+	public ItemType type;
+	[TextArea(5, 20)]
 	public string description;
 	public int damage;
 
 	[Header("Use this to update")]
 	[Range(0, 1)]
-	public int slider;
+	public int updater;
 
 	void Start() {
 		itemName = gameObject.name;
