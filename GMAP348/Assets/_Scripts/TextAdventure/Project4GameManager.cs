@@ -29,12 +29,22 @@ public class Project4GameManager : WordLibrary {
 	private LocationManager locInfo;
 
 	// Tracks location content
-	public List<GameObject> locItems;
-	public List<GameObject> locPeople;
+	public List<string> locItems;
+	public List<string> locPeople;
 
 	// Tracks location movement
 	private int prevLocation = 0;
 	private int currLocation = 0;
+
+	// Tracks current conversation partner
+	private TextAdventurePerson conversationPartner;
+
+	// Tracks Dialogue Node information
+	private DialogueNode dialogue;
+
+	// Tracks Dialogue Node movement
+	private int prevNode = 0;
+	private int currNode = 0;
 
 	// Reference play stats
 	private TextAdventurePlayer player;
@@ -55,6 +65,13 @@ public class Project4GameManager : WordLibrary {
 
 		// Set uniuqe preposition words
 		GetDistinctElements(prepositions, prepositionCheck);
+
+		// Set unique conversastion words
+		GetDistinctElements(yesWords, yesWordsCheck);
+		GetDistinctElements(noWords, noWordsCheck);
+		GetDistinctElements(directWords, directWordsCheck);
+		GetDistinctElements(reservedWords, reservedWordsCheck);
+		GetDistinctElements(endWords, endWordsCheck);
 
 		// Get player
 		player = gameObject.GetComponent<TextAdventurePlayer>();
@@ -79,6 +96,8 @@ public class Project4GameManager : WordLibrary {
 	private void Update() {
 		// Update location info
 		GetLocationInfo();
+		// Update dialouge info
+		GetDialogueInfo();
 	}
 
 
@@ -121,20 +140,16 @@ public class Project4GameManager : WordLibrary {
 
 		// Check if input exists
 		if (inText != "") {
-
 			// Check if input starts with space
 			if (pInputArr[0] != "") {
-
 				// Check if in Command Mode
 				if (inDevMode) {
-
 					// Interpret command action
 					InterpretDevText(pInputArr);
-
 					// Check if in Conversation Mode
 				} else if (inConversation) {
-
-					// send text to conversation interpreter
+					// Interpret conversation action
+					InterpretConversationText(pInputArr);
 
 				} else {
 					// Interpret player action
@@ -204,12 +219,38 @@ public class Project4GameManager : WordLibrary {
 		}
 	}
 
+	/// <summary>
+	/// Adds an item from the location to the player's inventory.
+	/// </summary>
+	/// <param name="action">Input.</param>
 	private void PickupAction(string[] action) {
-		outputConcatenation += "Picking up ";
+		// Check if supplied a noun
+		if (action.Length > 1) {
+			for (int i = 0; i < action.Length; i++) {
+				if (locItems.Contains(action[i])) {
+					// Add item to inventory
+					player.inventory.Add(GetItemByName(action[i]));
+
+					// Remove item reference from Animator + current location info
+					locInfo.items.Remove(FirstLetterToUpper(action[i]));
+					locItems.Remove(action[i].ToLower());
+
+					// Display picked up item
+					outputConcatenation += "I picked up " + GetNounDeterminer(action[i]).ToLower() + " " + action[i];
+					return;
+				}
+			}
+			outputConcatenation += "That is not here.";
+		} else {
+			outputConcatenation += "Must supply an item to pick up.";
+		}
 	}
 
 	private void ExamineAction(string[] action) {
 		outputConcatenation += "Looking at ";
+		// Check if room
+		// Check if item
+		// Check if person
 	}
 
 	/// <summary>
@@ -217,30 +258,23 @@ public class Project4GameManager : WordLibrary {
 	/// </summary>
 	/// <param name="action">Input.</param>
 	private void InventoryAction(string[] action) {
-
 		// Check if inventory is empty
 		if (player.inventory.Count > 0) {
 			// Check if examing item in inventory
 			if (action.Length > 1) {
-
 				GameObject itemGO = GetItemByName(action[1]);
-
 				if (itemGO != null) {
 					TextAdventureItem item = itemGO.GetComponent<TextAdventureItem>();
-
 					if (DoesPlayerHaveItem(item.itemName)) {
-						outputConcatenation += GetNounDeterminer(item.itemName) + " " + item.itemName + ", " + item.description;
+						outputConcatenation += GetNounDeterminer(item.itemName) + " " + item.itemName + "\n" + item.description;
 					} else {
 						outputConcatenation += "I do not have " + GetNounDeterminer(item.itemName).ToLower() + " " + item.itemName;
 					}
-
 				} else {
 					outputConcatenation += "I do not have " + GetNounDeterminer(action[1]).ToLower() + " " + action[1];
 				}
-
 			} else {
 				outputConcatenation += "I have :\n";
-
 				// Get all items in inventory
 				foreach(GameObject item in player.inventory) {
 					// Get all item names
@@ -254,22 +288,36 @@ public class Project4GameManager : WordLibrary {
 		}
 	}
 
+	/// <summary>
+	/// Starts the conversation action.
+	/// </summary>
+	/// <param name="action">Action.</param>
 	private void StartConversationAction(string[] action) {
-		outputConcatenation += "Let's talk.";
-		// check second input against locPeople by name
-		// if pass
-		inConversation = true;
+		// Check if supplied a noun
+		if (action.Length > 1) {
+			for (int i = 0; i < action.Length; i++) {
+				if (locPeople.Contains(action[i])) {
+					conversationPartner = GetPersonByName(action[i]).GetComponent<TextAdventurePerson>();
+					inConversation = true;
+					return;
+				}
+			}
+			outputConcatenation += "That person is not here.";
+		} else {
+			outputConcatenation += "I need to talk to someone.";
+		}
 	}
 
 	private void UseItemAction(string[] action) {
 		outputConcatenation += "Using item";
 		// check inventory for item
+		// get item type
+		// new word library for action type?
 	}
 
 	private void MoveAction(string[] action) {
-		Directions moveDir = Directions.Stay;
-
 		if (action.Length > 1) {
+			Directions moveDir = Directions.Stay;
 			if (action[1] == "n" || action[1] == "north") {
 				moveDir = Directions.North;
 			} else if (action[1] == "e" || action[1] == "east") {
@@ -290,7 +338,7 @@ public class Project4GameManager : WordLibrary {
 	}
 
 	/// <summary>
-	/// Gets the location info.
+	/// Gets the location information from the Location Animator.
 	/// </summary>
 	private void GetLocationInfo() {
 		// Get current location hash
@@ -303,9 +351,9 @@ public class Project4GameManager : WordLibrary {
 			}
 		}
 
-		// Update variables if in new room
+		// Checks location hash against previous hash
 		if (currLocation != prevLocation) {
-			//outputConcatenation += locInfo.description + "\n";
+			// Immediately display location description
 			output.text += locInfo.description + "\n";
 
 			// Update items in room list
@@ -313,29 +361,119 @@ public class Project4GameManager : WordLibrary {
 				locItems.Clear();
 			}
 			if (locInfo.items.Count > 0) {
+				if (GetNounDeterminer(locInfo.items[0]) == "") {
+					output.text += "There are";
+				} else {
+					output.text += "There is ";
+				}
+
+				string showItems = "";
 				foreach(string s in locInfo.items) {
 					if (GetItemByName(s) != null) {
-						locItems.Add(GetItemByName(s));
+						showItems += GetNounDeterminer(s).ToLower() + " " + s + ", ";
+						locItems.Add(s.ToLower());
 					}
 				}
+					
+				showItems = new System.Text.StringBuilder(showItems).Remove(showItems.LastIndexOf(", "), 2).ToString();
+
+				if (locInfo.items.Count == 2) {
+					var stringBldr = new System.Text.StringBuilder(showItems);
+					stringBldr.Insert(showItems.LastIndexOf(", ") + 2, " and ");
+					stringBldr.Remove(showItems.LastIndexOf(", "), 2);
+					showItems = stringBldr.ToString();
+				} else if (locInfo.items.Count > 2) {
+					var stringBldr = new System.Text.StringBuilder(showItems);
+					stringBldr.Insert(showItems.LastIndexOf(", ") + 2, "and ");
+					showItems = stringBldr.ToString();
+				}
+				output.text += showItems + " here.";
 			}
+
+			output.text += "\n";
 
 			// Update people in room list
 			if (locPeople.Count > 0) {
 				locPeople.Clear();
 			}
 			if (locInfo.people.Count > 0) {
+				output.text += "You see ";
+
+				string showPeople = "";
 				foreach(string s in locInfo.people) {
 					if (GetPersonByName(s) != null) {
-						locPeople.Add(GetPersonByName(s));
+						showPeople += s + ", ";
+						locPeople.Add(s.ToLower());
 					}
 				}
+
+				showPeople = new System.Text.StringBuilder(showPeople).Remove(showPeople.LastIndexOf(", "), 2).ToString();
+
+				if (locInfo.people.Count == 2) {
+					var stringBldr = new System.Text.StringBuilder(showPeople);
+					stringBldr.Insert(showPeople.LastIndexOf(", ") + 2, " and ");
+					stringBldr.Remove(showPeople.LastIndexOf(", "), 2);
+					showPeople = stringBldr.ToString();
+				} else if (locInfo.people.Count > 2) {
+					var stringBldr = new System.Text.StringBuilder(showPeople);
+					stringBldr.Insert(showPeople.LastIndexOf(", ") + 2, "and ");
+					showPeople = stringBldr.ToString();
+				}
+				output.text += showPeople + " in the room.";
 			}
 		}
 
 		// Store location for comparison
 		prevLocation = currLocation;
 	}
+
+
+	// Conversation Interpreter
+	private void InterpretConversationText(string[] toInterpret) {
+		if (conversationPartner != null) {
+			DialoguePath convoPath = ConversationStringToEnum(string.Join(" ", toInterpret));
+
+			if (convoPath == DialoguePath.End) {
+				outputConcatenation += "<i><b>" + conversationPartner.personName + "</b></i>\n" + "Bye.";
+				inConversation = false;
+				convoPath = DialoguePath.Stay;
+			} else if (convoPath == DialoguePath.Stay) {
+				outputConcatenation += "Not valid conversation item.";
+			}
+
+			conversationPartner.conversationTree.SetInteger("Path", (int)convoPath);
+		} else {
+			inConversation = false;
+		}
+	}
+
+	/// <summary>
+	/// Gets the dialogue information from the Dialogue Animator.
+	/// </summary>
+	private void GetDialogueInfo() {
+		if (conversationPartner != null) {
+			// Get current node hash
+			currNode = conversationPartner.conversationTree.GetCurrentAnimatorStateInfo(0).shortNameHash;
+
+			// Get currently enabled dialogue node behaviour
+			for (int i = 0; i < conversationPartner.allDialogues.Length; i++) {
+				if (conversationPartner.allDialogues[i].isEnabled) {
+					dialogue = conversationPartner.allDialogues[i];
+				}
+			}
+
+			// Checks node hash against previous hash
+			if (currNode != prevNode) {
+				output.text += "<i><b>" + conversationPartner.personName + "</b></i>\n" + dialogue.dialogue + "\n";
+			}
+					
+			// Store node for comparison
+			prevNode = currNode;
+		}
+	}
+
+
+	// Developer Interpreter
 
 	/// <summary>
 	/// Interprets the text based on the Developer Commands.
@@ -365,6 +503,7 @@ public class Project4GameManager : WordLibrary {
 	}
 
 
+	// Object Checks
 
 	/// <summary>
 	/// Evaluates if an item GameObject exists by its itemName.
@@ -408,5 +547,13 @@ public class Project4GameManager : WordLibrary {
 			}
 		}
 		return false;
+	}
+
+	/// <summary>
+	/// Wait the specified time t.
+	/// </summary>
+	/// <param name="t">Time in seconds to wait.</param>
+	IEnumerator Wait(float t) {
+		yield return new WaitForSeconds(t);
 	}
 }

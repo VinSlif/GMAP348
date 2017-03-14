@@ -6,14 +6,15 @@ public class TextAdventureEnums : MonoBehaviour {
 		Yes,
 		No,
 		Direct,
-		Reserved
+		Reserved,
+		End,
 	}
 
 	public enum ItemType {
 		Weapon,
 		Clue,
 		Misc,
-		NotItem
+		NotItem,
 	}
 
 	public enum Directions {
@@ -21,6 +22,6 @@ public class TextAdventureEnums : MonoBehaviour {
 		North,
 		East,
 		South,
-		West
+		West,
 	}
 }

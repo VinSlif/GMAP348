@@ -50,7 +50,7 @@ public class WordLibrary : TextAdventureEnums {
 			return ActionType.Converse;
 
 		} else if (pickupVerbsCheck.Contains(word)) {
-			// Check for item Pikcup verbs
+			// Check for item Pickup verbs
 			return ActionType.PickUp;
 
 		} else if (inventoryVerbsCheck.Contains(word)) {
@@ -91,6 +91,52 @@ public class WordLibrary : TextAdventureEnums {
 		}
 	}
 
+	[Header("Conversation Library")]
+	public List<string> yesWords;
+	public List<string> noWords;
+	public List<string> directWords;
+	public List<string> reservedWords;
+	public List<string> endWords;
+
+	[HideInInspector]
+	public List<string> yesWordsCheck;
+	[HideInInspector]
+	public List<string> noWordsCheck;
+	[HideInInspector]
+	public List<string> directWordsCheck;
+	[HideInInspector]
+	public List<string> reservedWordsCheck;
+	[HideInInspector]
+	public List<string> endWordsCheck;
+
+	public DialoguePath ConversationStringToEnum(string response) {
+		// Test word against words in all Conversation Libraries
+		if (yesWordsCheck.Contains(response)) {
+			// Check if response is in Yes library
+			return DialoguePath.Yes;
+
+		} else if (noWordsCheck.Contains(response)) {
+			// Check if response is in No library
+			return DialoguePath.No;
+
+		} else if (directWordsCheck.Contains(response)) {
+			// Check if response is in Direct library
+			return DialoguePath.Direct;
+
+		} else if (reservedWordsCheck.Contains(response)) {
+			// Check if response is in Reserved library
+			return DialoguePath.Reserved;
+
+		} else if (endWordsCheck.Contains(response)) {
+			// Check if response is in End Library
+			return DialoguePath.End;
+
+		} else {
+			// Return if response is not in Library
+			return DialoguePath.Stay;
+		}
+	}
+
 
 	/// <summary>
 	/// Gets the determiner of a noun.
@@ -100,7 +146,7 @@ public class WordLibrary : TextAdventureEnums {
 	public string GetNounDeterminer(string noun) {
 		// Check if noun ends with s
 		if (noun[noun.Length - 1] == 's') {
-			return "Some";
+			return "";
 		} else {
 			// Check if noun starts with a vowel
 			if ("AEIOU".IndexOf(noun[0]) != -1) {
@@ -120,8 +166,26 @@ public class WordLibrary : TextAdventureEnums {
 		toList.Clear();
 		var uniqueCheck = new HashSet<string>(checkList);
 		foreach(string el in uniqueCheck) {
-			toList.Add(el);
+			toList.Add(el.ToLower());
 		}
+	}
+
+	/// <summary>
+	/// Capitalizes the first character of a string.
+	/// 
+	/// Created by: Equiso
+	/// http://stackoverflow.com/questions/4135317/make-first-letter-of-a-string-upper-case-for-maximum-performance#4135491
+	/// </summary>
+	/// <returns>The letter to upper.</returns>
+	/// <param name="str">String.</param>
+	public string FirstLetterToUpper(string str) {
+		if (str == null)
+			return null;
+
+		if (str.Length > 1)
+			return char.ToUpper(str[0]) + str.Substring(1);
+
+		return str.ToUpper();
 	}
 
 	/// <summary>
