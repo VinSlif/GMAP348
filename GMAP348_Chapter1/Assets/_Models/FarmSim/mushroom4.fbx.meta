@@ -1,0 +1,141 @@
+fileFormatVersion: 2
+guid: b6b81ba2aaf8b47a98bf207e4ef4fbda
+timeCreated: 1488254767
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: MiniMushroom
+    100002: MiniMushroom1
+    100004: MiniMushroom2
+    100006: MiniMushroom3
+    100008: //RootNode
+    100010: MushroomStalk
+    100012: MushroomStalk 1
+    100014: MushroomStalk 2
+    100016: MushroomStalk 3
+    100018: MushroomStalk 4
+    100020: MushroomStalkBase
+    100022: MushroomTip
+    100024: MushroomTip 1
+    100026: MushroomTip 2
+    100028: MushroomTip 3
+    100030: MushroomTip 4
+    400000: MiniMushroom
+    400002: MiniMushroom1
+    400004: MiniMushroom2
+    400006: MiniMushroom3
+    400008: //RootNode
+    400010: MushroomStalk
+    400012: MushroomStalk 1
+    400014: MushroomStalk 2
+    400016: MushroomStalk 3
+    400018: MushroomStalk 4
+    400020: MushroomStalkBase
+    400022: MushroomTip
+    400024: MushroomTip 1
+    400026: MushroomTip 2
+    400028: MushroomTip 3
+    400030: MushroomTip 4
+    2300000: MushroomStalk
+    2300002: MushroomStalk 1
+    2300004: MushroomStalk 2
+    2300006: MushroomStalk 3
+    2300008: MushroomStalk 4
+    2300010: MushroomStalkBase
+    2300012: MushroomTip
+    2300014: MushroomTip 1
+    2300016: MushroomTip 2
+    2300018: MushroomTip 3
+    2300020: MushroomTip 4
+    3300000: MushroomStalk
+    3300002: MushroomStalk 1
+    3300004: MushroomStalk 2
+    3300006: MushroomStalk 3
+    3300008: MushroomStalk 4
+    3300010: MushroomStalkBase
+    3300012: MushroomTip
+    3300014: MushroomTip 1
+    3300016: MushroomTip 2
+    3300018: MushroomTip 3
+    3300020: MushroomTip 4
+    4300000: MushroomStalkBase
+    4300002: MushroomStalk
+    4300004: MushroomTip
+    4300006: MushroomStalk
+    4300008: MushroomTip
+    4300010: MushroomStalk
+    4300012: MushroomTip
+    4300014: MushroomStalk
+    4300016: MushroomTip
+    4300018: MushroomStalk
+    4300020: MushroomTip
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 15
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
