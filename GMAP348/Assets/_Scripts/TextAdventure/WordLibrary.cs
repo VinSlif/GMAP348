@@ -3,36 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WordLibrary : TextAdventureEnums {
-	public enum ActionType {
-		Examine,
-		Converse,
-		PickUp,
-		Inventory,
-		Move,
-		Use,
-		NotAction
-	}
-
+	
 	[Header("Action Verb Library")]
 	public List<string> examineVerbs;
 	public List<string> converseVerbs;
 	public List<string> pickupVerbs;
-	public List<string> inventoryVerbs;
 	public List<string> movementVerbs;
-	public List<string> itemUseVerbes;
 
-	[HideInInspector]
-	public List<string> examineVerbsCheck;
-	[HideInInspector]
-	public List<string> converseVerbsCheck;
-	[HideInInspector]
-	public List<string> pickupVerbsCheck;
-	[HideInInspector]
-	public List<string> inventoryVerbsCheck;
-	[HideInInspector]
-	public List<string> movementVerbsCheck;
-	[HideInInspector]
-	public List<string> itemUseVerbesCheck;
+	private List<string> examineVerbsCheck;
+	private List<string> converseVerbsCheck;
+	private List<string> pickupVerbsCheck;
+	private List<string> movementVerbsCheck;
 
 	/// <summary>
 	/// Interprets a string to enum.
@@ -53,15 +34,11 @@ public class WordLibrary : TextAdventureEnums {
 			// Check for item Pickup verbs
 			return ActionType.PickUp;
 
-		} else if (inventoryVerbsCheck.Contains(word)) {
-			// Check for Inventory check requests
-			return ActionType.Inventory;
-
 		} else if (movementVerbsCheck.Contains(word)) {
 			// Check if attempting to Move
 			return ActionType.Move;
 
-		} else if (itemUseVerbesCheck.Contains(word)) {
+		} else if (IsUseVerb(word)) { // check all use library
 			// Check if attempting to use an item
 			return ActionType.Use;
 
@@ -71,15 +48,14 @@ public class WordLibrary : TextAdventureEnums {
 		}
 	}
 
+
 	[Header("Preposition Library")]
 	public List<string> prepositions;
 
-	[HideInInspector]
-	public List<string> prepositionCheck;
+	private List<string> prepositionCheck;
 
 	/// <summary>
-	/// Checks if a word is in the Preposition
-	/// Library
+	/// Checks if a word is in the Preposition Library
 	/// </summary>
 	/// <returns><c>true</c>, a word is a preposition, <c>false</c> if it is not.</returns>
 	/// <param name="word">Word used to check against the Preposition Library.</param>
@@ -91,52 +67,171 @@ public class WordLibrary : TextAdventureEnums {
 		}
 	}
 
-	[Header("Conversation Library")]
-	public List<string> yesWords;
-	public List<string> noWords;
-	public List<string> directWords;
-	public List<string> reservedWords;
-	public List<string> endWords;
 
-	[HideInInspector]
-	public List<string> yesWordsCheck;
-	[HideInInspector]
-	public List<string> noWordsCheck;
-	[HideInInspector]
-	public List<string> directWordsCheck;
-	[HideInInspector]
-	public List<string> reservedWordsCheck;
-	[HideInInspector]
-	public List<string> endWordsCheck;
+	[Header("Item Use Library")]
+	public List<string> combineVerbs;
+	public List<string> attackVerbs;
+	public List<string> placeVerbs;
+	public List<string> toggleVerbs;
+	public List<string> eatVerbs;
+	public List<string> drinkVerbs;
+	public List<string> smellVerbs;
+	public List<string> listenVerbs;
+	public List<string> touchVerbs;
 
-	public DialoguePath ConversationStringToEnum(string response) {
-		// Test word against words in all Conversation Libraries
-		if (yesWordsCheck.Contains(response)) {
-			// Check if response is in Yes library
-			return DialoguePath.Yes;
+	private List<string> combineVerbsCheck;
+	private List<string> attackVerbsCheck;
+	private List<string> placeVerbsCheck;
+	private List<string> toggleVerbsCheck;
+	private List<string> eatVerbsCheck;
+	private List<string> drinkVerbsCheck;
+	private List<string> smellVerbsCheck;
+	private List<string> listenVerbsCheck;
+	private List<string> touchVerbsCheck;
 
-		} else if (noWordsCheck.Contains(response)) {
-			// Check if response is in No library
-			return DialoguePath.No;
-
-		} else if (directWordsCheck.Contains(response)) {
-			// Check if response is in Direct library
-			return DialoguePath.Direct;
-
-		} else if (reservedWordsCheck.Contains(response)) {
-			// Check if response is in Reserved library
-			return DialoguePath.Reserved;
-
-		} else if (endWordsCheck.Contains(response)) {
-			// Check if response is in End Library
-			return DialoguePath.End;
-
+	private bool IsUseVerb(string verb) {
+		if (combineVerbsCheck.Contains(verb) || attackVerbsCheck.Contains(verb) ||
+		    placeVerbsCheck.Contains(verb) || toggleVerbsCheck.Contains(verb) ||
+		    eatVerbsCheck.Contains(verb) || drinkVerbsCheck.Contains(verb) ||
+		    smellVerbsCheck.Contains(verb) || listenVerbsCheck.Contains(verb) ||
+		    touchVerbsCheck.Contains(verb)) {
+			return true;
 		} else {
-			// Return if response is not in Library
-			return DialoguePath.Stay;
+			return false;
 		}
 	}
 
+
+	[Header("Object Identifiers")]
+	public List<string> inventory;
+	public List<string> location;
+
+	[HideInInspector]
+	public List<string> inventoryCheck;
+	[HideInInspector]
+	public List<string> locationCheck;
+
+	public CheckID IdentityExamineTarget(string potentialTarget) {
+		if (inventoryCheck.Contains(potentialTarget)) {
+			return CheckID.Inventory;
+		} else if (locationCheck.Contains(potentialTarget)) {
+			return CheckID.Room;
+		} else {
+			return CheckID.NoID;
+		}
+	}
+
+
+	[Header("Conversation Library")]
+	public List<string> yesPhrases;
+	public List<string> noPhrases;
+	public List<string> directPhrases;
+	public List<string> reservedPhrases;
+	public List<string> endPhrases;
+
+	private List<string> yesPhrasesCheck;
+	private List<string> noPhrasesCheck;
+	private List<string> directPhrasesCheck;
+	private List<string> reservedPhrasesCheck;
+	private List<string> endPhrasesCheck;
+
+	/// <summary>
+	/// Interprets the type of response based on the
+	/// Conversation Library
+	/// </summary>
+	/// <returns>Response Enum.</returns>
+	/// <param name="response">Player response to NPC conversation.</param>
+	public DialoguePath ConversationStringToEnum(string response) {
+		// Check if response is in Yes library
+		foreach(string s in yesPhrasesCheck) {
+			if (response.Contains(s)) {
+				return DialoguePath.Yes;
+			}
+		}
+
+		// Check if response is in No library
+		foreach(string s in noPhrasesCheck) {
+			if (response.Contains(s)) {
+				return DialoguePath.No;
+			}
+		}
+
+		foreach(string s in directPhrasesCheck) {
+			if (response.Contains(s)) {
+				// Check if response is in Direct library
+				return DialoguePath.Direct;
+			}
+		}
+
+		// Check if response is in Reserved library
+		foreach(string s in reservedPhrasesCheck) {
+			if (response.Contains(s)) {
+				return DialoguePath.Reserved;
+			}
+		}
+
+		// Check if response is in End Library
+		foreach(string s in endPhrasesCheck) {
+			if (response.Contains(s)) {
+				return DialoguePath.End;
+			}
+		}
+
+		// Return if response is not in Library
+		return DialoguePath.Stay;
+	}
+
+	// Organize Library Functions
+
+	public void Init() {
+		// Set unique verbs to use as checks
+		examineVerbsCheck = GetDistinctElements(examineVerbs);
+		converseVerbsCheck = GetDistinctElements(converseVerbs);
+		pickupVerbsCheck = GetDistinctElements(pickupVerbs);
+		movementVerbsCheck = GetDistinctElements(movementVerbs);
+
+		// Set uniuqe preposition words
+		prepositionCheck = GetDistinctElements(prepositions);
+
+		// Set unique item use verbs
+		combineVerbsCheck = GetDistinctElements(combineVerbs);
+		attackVerbsCheck = GetDistinctElements(attackVerbs);
+		placeVerbsCheck = GetDistinctElements(placeVerbs);
+		toggleVerbsCheck = GetDistinctElements(toggleVerbs);
+		eatVerbsCheck = GetDistinctElements(eatVerbs);
+		drinkVerbsCheck = GetDistinctElements(drinkVerbs);
+		smellVerbsCheck = GetDistinctElements(smellVerbs);
+		listenVerbsCheck = GetDistinctElements(listenVerbs);
+		touchVerbsCheck = GetDistinctElements(touchVerbs);
+
+		// Set unique object identifiers
+		inventoryCheck = GetDistinctElements(inventory);
+		locationCheck = GetDistinctElements(location);
+
+		// Set unique conversastion words
+		yesPhrasesCheck = GetDistinctElements(yesPhrases);
+		noPhrasesCheck = GetDistinctElements(noPhrases);
+		directPhrasesCheck = GetDistinctElements(directPhrases);
+		reservedPhrasesCheck = GetDistinctElements(reservedPhrases);
+		endPhrasesCheck = GetDistinctElements(endPhrases);
+	}
+
+	/// <summary>
+	/// Gets the distinct elements of one string list into another list.
+	/// </summary>
+	/// <param name="checkList">Used to get list of elements.</param>
+	/// <param name="toList">List that will have unique elements.</param>
+	private List<string> GetDistinctElements(List<string> checkList) {
+		List<string> toList = new List<string>();
+		var uniqueCheck = new HashSet<string>(checkList);
+		foreach(string el in uniqueCheck) {
+			toList.Add(el.ToLower());
+		}
+		return toList;
+	}
+
+
+	// Formatting Functions
 
 	/// <summary>
 	/// Gets the determiner of a noun.
@@ -158,16 +253,24 @@ public class WordLibrary : TextAdventureEnums {
 	}
 
 	/// <summary>
-	/// Gets the distinct of one string list into another list.
+	/// Removes the first word of a sentence.
 	/// </summary>
-	/// <param name="checkList">Used to get list of elements.</param>
-	/// <param name="toList">List that will have unique elements.</param>
-	public void GetDistinctElements(List<string> checkList, List<string> toList) {
-		toList.Clear();
-		var uniqueCheck = new HashSet<string>(checkList);
-		foreach(string el in uniqueCheck) {
-			toList.Add(el.ToLower());
+	/// <returns>The sentence without the first word.</returns>
+	/// <param name="sentence">Sentence.</param>
+	public string RemoveFirstWord(string sentence) {
+		string[] words = sentence.Split(' ');
+		string removedFirstWordSentence = "";
+
+		if (words.Length > 1) {
+			for (int i = 1; i < words.Length; i++) {
+				removedFirstWordSentence += words[i] + " ";
+			}
+			var stringBldr = new System.Text.StringBuilder(removedFirstWordSentence);
+			stringBldr.Remove(removedFirstWordSentence.LastIndexOf(" "), 1);
+			removedFirstWordSentence = stringBldr.ToString();
 		}
+
+		return removedFirstWordSentence;
 	}
 
 	/// <summary>
@@ -189,6 +292,34 @@ public class WordLibrary : TextAdventureEnums {
 	}
 
 	/// <summary>
+	/// Formats a list of strings into a single, formatted string with commas and an 'and.'
+	/// </summary>
+	/// <returns>A formatted string of the list.</returns>
+	/// <param name="itemList">List of strings.</param>
+	public string FormatCommaList(List<string> itemList) {
+		string formatted = "";
+		foreach(string s in itemList) {
+			formatted += s + ", ";
+		}
+
+		formatted = new System.Text.StringBuilder(formatted).Remove(formatted.LastIndexOf(", "), 2).ToString();
+
+		if (itemList.Count == 2) {
+			var stringBldr = new System.Text.StringBuilder(formatted);
+			stringBldr.Insert(formatted.LastIndexOf(", ") + 2, " and ");
+			stringBldr.Remove(formatted.LastIndexOf(", "), 2);
+			formatted = stringBldr.ToString();
+
+		} else if (itemList.Count > 2) {
+			var stringBldr = new System.Text.StringBuilder(formatted);
+			stringBldr.Insert(formatted.LastIndexOf(", ") + 2, "and ");
+			formatted = stringBldr.ToString();
+		}
+
+		return formatted;
+	}
+
+	/// <summary>
 	/// Removes the special characters from a string.
 	/// 
 	/// Created by: Adam Tal
@@ -196,7 +327,7 @@ public class WordLibrary : TextAdventureEnums {
 	/// </summary>
 	/// <returns>A string with no special characters.</returns>
 	/// <param name="str">String to remove special characters.</param>
-	public static string RemoveSpecialCharacters(string str) {
+	public string RemoveSpecialCharacters(string str) {
 		System.Text.StringBuilder sb = new System.Text.StringBuilder();
 		foreach(char c in str) {
 			if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
