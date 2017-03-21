@@ -7,6 +7,8 @@ public class DialogueNode : StateMachineBehaviour {
 	[TextArea(5, 20)]
 	public string dialogue;
 
+	public bool isEndNode = false;
+
 	[HideInInspector]
 	public bool isEnabled = false;
 

@@ -25,8 +25,4 @@ public class TextAdventurePerson : TextAdventureEnums {
 		// Get all behaviours from the animator
 		allDialogues = conversationTree.GetBehaviours<DialogueNode>();
 	}
-
-	private void Update() {
-
-	}
 }
