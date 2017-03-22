@@ -10,6 +10,8 @@ public class TextAdventureItem : TextAdventureEnums {
 	public string description;
 	public int damage;
 
+	public bool displayInRoomInfo = true;
+
 	[Header("Use this to update")]
 	[Range(0, 1)]
 	public int updater;

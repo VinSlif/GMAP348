@@ -16,7 +16,7 @@ public class WordLibrary : TextAdventureEnums {
 	private List<string> movementVerbsCheck;
 
 	/// <summary>
-	/// Interprets a string to enum.
+	/// Interprets a string to an action enum.
 	/// </summary>
 	/// <returns>ActionType of a word.</returns>
 	/// <param name="word">Word needed to interpret ActionType.</param>
@@ -101,6 +101,80 @@ public class WordLibrary : TextAdventureEnums {
 		}
 	}
 
+	/// <summary>
+	/// Interpets the type of use action to an enum.
+	/// </summary>
+	/// <returns>The use action enum.</returns>
+	/// <param name="phrase">Phrase to be interpreted.</param>
+	public UseAction UseActionStringToEnum(string phrase) {
+		// Check if phrase is in Attack library
+		foreach(string s in attackVerbsCheck) {
+			if (phrase.Contains(s)) {
+				return UseAction.Attack;
+			}
+		}
+
+		// Check if phrase is in Combine library
+		foreach(string s in combineVerbsCheck) {
+			if (phrase.Contains(s)) {
+				return UseAction.Combine;
+			}
+		}
+
+		// Check if phrase is in Drink library
+		foreach(string s in drinkVerbsCheck) {
+			if (phrase.Contains(s)) {
+				return UseAction.Drink;
+			}
+		}
+
+		// Check if phrase is in Eat library
+		foreach(string s in eatVerbsCheck) {
+			if (phrase.Contains(s)) {
+				return UseAction.Eat;
+			}
+		}
+
+		// Check if phrase is in Listen library
+		foreach(string s in listenVerbsCheck) {
+			if (phrase.Contains(s)) {
+				return UseAction.Listen;
+			}
+		}
+
+		// Check if phrase is in Place library
+		foreach(string s in placeVerbsCheck) {
+			if (phrase.Contains(s)) {
+				return UseAction.Place;
+			}
+		}
+
+		// Check if phrase is in Smell library
+		foreach(string s in smellVerbsCheck) {
+			if (phrase.Contains(s)) {
+				return UseAction.Smell;
+			}
+		}
+
+		// Check if phrase is in Toggle library
+		foreach(string s in toggleVerbsCheck) {
+			if (phrase.Contains(s)) {
+				return UseAction.Toggle;
+			}
+		}
+
+		// Check if phrase is in Touch library
+		foreach(string s in touchVerbsCheck) {
+			if (phrase.Contains(s)) {
+				return UseAction.Touch;
+			}
+		}
+
+		// Return if phrase is not in Library
+		return UseAction.NotAction;
+	}
+
+
 
 	[Header("Object Identifiers")]
 	public List<string> inventory;
@@ -156,6 +230,7 @@ public class WordLibrary : TextAdventureEnums {
 			}
 		}
 
+		// Check if response is in Direct Library
 		foreach(string s in directPhrasesCheck) {
 			if (response.Contains(s)) {
 				// Check if response is in Direct library
@@ -239,12 +314,15 @@ public class WordLibrary : TextAdventureEnums {
 	/// <returns>The noun determiner.</returns>
 	/// <param name="noun">Noun to be interpreted.</param>
 	public string GetNounDeterminer(string noun) {
+		// Ensure check is lowercase
+		noun = noun.ToLower();
+
 		// Check if noun ends with s
 		if (noun[noun.Length - 1] == 's') {
 			return "";
 		} else {
 			// Check if noun starts with a vowel
-			if ("AEIOU".IndexOf(noun[0]) != -1) {
+			if ("aeiou".IndexOf(noun[0]) != -1) {
 				return "An";
 			} else {
 				return "A";
@@ -298,19 +376,23 @@ public class WordLibrary : TextAdventureEnums {
 	/// <param name="itemList">List of strings.</param>
 	public string FormatCommaList(List<string> itemList) {
 		string formatted = "";
+		int numItems = 0;
 		foreach(string s in itemList) {
-			formatted += s + ", ";
+			if (s != "") {
+				formatted += s + ", ";
+				numItems++;
+			}
 		}
 
 		formatted = new System.Text.StringBuilder(formatted).Remove(formatted.LastIndexOf(", "), 2).ToString();
 
-		if (itemList.Count == 2) {
+		if (numItems == 2) {
 			var stringBldr = new System.Text.StringBuilder(formatted);
 			stringBldr.Insert(formatted.LastIndexOf(", ") + 2, " and ");
 			stringBldr.Remove(formatted.LastIndexOf(", "), 2);
 			formatted = stringBldr.ToString();
 
-		} else if (itemList.Count > 2) {
+		} else if (numItems > 2) {
 			var stringBldr = new System.Text.StringBuilder(formatted);
 			stringBldr.Insert(formatted.LastIndexOf(", ") + 2, "and ");
 			formatted = stringBldr.ToString();

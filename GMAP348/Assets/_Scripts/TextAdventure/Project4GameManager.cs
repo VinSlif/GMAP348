@@ -30,9 +30,9 @@ public class Project4GameManager : TextAdventureEnums {
 	private LocationManager locInfo;
 
 	// Tracks location content
-	public List<string> locItems = new List<string>();
+	private List<string> locItems = new List<string>();
 	private List<string> locItemDisplay = new List<string>();
-	public List<string> locPeople = new List<string>();
+	private List<string> locPeople = new List<string>();
 	private List<string> locPeopleDisplay = new List<string>();
 
 	// Tracks location movement
@@ -180,7 +180,8 @@ public class Project4GameManager : TextAdventureEnums {
 								break;
 							case ActionType.Use:
 								if (inputArr.Length > 1) {
-									UseItemAction(toInterpret);
+									//UseItemAction(inputArr);
+									outputConcatenation += "I would like to use an item, but that is not implemented yet.";
 								} else {
 									outputConcatenation += "I need an item to " + action + ".";
 								}
@@ -224,13 +225,14 @@ public class Project4GameManager : TextAdventureEnums {
 					// Add item to inventory
 					player.inventory.Add(GetItemByName(locItems[i]));
 
+					// Display picked up item
+					outputConcatenation += "I picked up the " + library.FirstLetterToUpper(locItems[i]);
+
 					// Remove item reference from Animator + current location info
 					locInfo.items.Remove(library.FirstLetterToUpper(locItems[i]));
 					locItems.RemoveAt(i);
 					locItemDisplay.RemoveAt(i);
 
-					// Display picked up item
-					outputConcatenation += "I picked up the " + library.FirstLetterToUpper(locItems[i]);
 				} else {
 					outputConcatenation += "I cannot get " + library.FirstLetterToUpper(locItems[i]);
 				}
@@ -266,8 +268,8 @@ public class Project4GameManager : TextAdventureEnums {
 			if (examineTarget.Contains(s)) {
 				outputConcatenation += "You are at the " + locInfo.locationName + "\n" + locInfo.description + "\n\n";
 
-				if (locInfo.items.Count > 0) {
-					if (library.GetNounDeterminer(locInfo.items[0]) == "") {
+				if (locItemDisplay.Count > 0) {
+					if (library.GetNounDeterminer(locItemDisplay[0]) == "") {
 						outputConcatenation += "There are";
 					} else {
 						outputConcatenation += "There is ";
@@ -315,11 +317,39 @@ public class Project4GameManager : TextAdventureEnums {
 		outputConcatenation += "That person is not here.";
 	}
 
-	private void UseItemAction(string action) {
-		outputConcatenation += "Using item";
-		// check inventory for item
-		// get item type
-		// new word library for action type?
+	private void UseItemAction(string[] actionInterpet) {
+		UseAction useType = library.UseActionStringToEnum(actionInterpet[0]);
+		switch(useType) {
+		case UseAction.Attack:
+			if (actionInterpet.Length == 4) {
+				if (GetItemByName(actionInterpet[1]).GetComponent<TextAdventureItem>().type == ItemType.Weapon) {
+				} else {
+					outputConcatenation += "I cannot attack with " + library.GetNounDeterminer(actionInterpet[1]) + " " + actionInterpet[1];
+				}
+			} else {
+				outputConcatenation += "Need to type action as <i>action noun preposition noun</i>";
+			}
+
+			break;
+		case UseAction.Combine:
+			break;
+		case UseAction.Drink:
+			break;
+		case UseAction.Eat:
+			break;
+		case UseAction.Listen:
+			break;
+		case UseAction.Place:
+			break;
+		case UseAction.Smell:
+			break;
+		case UseAction.Toggle:
+			break;
+		case UseAction.Touch:
+			break;
+		default:
+			break;
+		}
 	}
 
 	private void MoveAction(string getDirection) {
@@ -368,12 +398,16 @@ public class Project4GameManager : TextAdventureEnums {
 				foreach(string s in locInfo.items) {
 					if (GetItemByName(s) != null) {
 						locItems.Add(s.ToLower());
-						locItemDisplay.Add(s);
+						if (GetItemByName(s).GetComponent<TextAdventureItem>().displayInRoomInfo) {
+							locItemDisplay.Add(s);
+						} else {
+							locItemDisplay.Add("");
+						}
 					}
 				}
 
-				if (locItems.Count > 0) {
-					if (library.GetNounDeterminer(locInfo.items[0]) == "") {
+				if (locItemDisplay.Count > 0) {
+					if (library.GetNounDeterminer(locItemDisplay[0]) == "") {
 						output.text += "There are";
 					} else {
 						output.text += "There is ";
@@ -475,6 +509,7 @@ public class Project4GameManager : TextAdventureEnums {
 				outputConcatenation += "/getmethedev\n  Enter Dev Mode\n";
 				outputConcatenation += "/additem [item name]\n  Add item to inventory\n";
 				outputConcatenation += "/forcetalk [person name]\n  Enter conversation with NPC\n";
+				outputConcatenation += "/volume [percentage]\n  Sets the volume percentage of the music\n";
 				outputConcatenation += "/clear\n  Clear text\n";
 				outputConcatenation += "/exit\n  Exit Dev Mode\n";
 			} else if (toInterpret[0] == "/additem") {
@@ -485,7 +520,6 @@ public class Project4GameManager : TextAdventureEnums {
 				} else {
 					outputConcatenation += toInterpret[1] + " is not an item in this game.";
 				}
-
 			} else if (toInterpret[0] == "/forcetalk") {
 				GameObject CheckPerson = GetPersonByName(toInterpret[1]);
 				if (CheckPerson != null) {
@@ -494,6 +528,13 @@ public class Project4GameManager : TextAdventureEnums {
 					outputConcatenation += "Talking to " + toInterpret[1];
 				} else {
 					outputConcatenation += toInterpret[1] + " is not an NPC in game.";
+				}
+			} else if (toInterpret[0] == "/volume") {
+				int volPercentage = System.Int32.Parse(toInterpret[1]);
+				if (volPercentage >= 0 && volPercentage <= 100) {
+					Camera.main.gameObject.GetComponent<AudioSource>().volume = ((float)volPercentage / 100.0f);
+				} else {
+					outputConcatenation += "Volume percentage must be between 0 and 100 (inclusive)";
 				}
 			} else if (toInterpret[0] == "/clear") {
 				output.text = "";
